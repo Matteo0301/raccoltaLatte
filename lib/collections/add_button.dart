@@ -49,8 +49,8 @@ class AddButtonState extends State<AddButton> {
     return file;
   }
 
-  Future<void> inputPopup(BuildContext context, Model<Collection> collections,
-      Collection? initial) async {
+  Future<void> inputPopup(
+      BuildContext context, Model<Collection> collections, String? _) async {
     date = DateTime.now();
     String? filePath = await obtainImage();
     debugPrint('File path: $filePath');

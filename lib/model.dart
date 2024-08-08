@@ -4,10 +4,10 @@ import 'package:flutter/material.dart';
 
 class Model<T> extends ChangeNotifier {
   final List<T> _items = [];
-  final Set<int> _selected = {};
+  final Set<String> _selected = {};
 
   UnmodifiableListView<T> get items => UnmodifiableListView(_items);
-  UnmodifiableSetView<int> get selected => UnmodifiableSetView(_selected);
+  UnmodifiableSetView<String> get selected => UnmodifiableSetView(_selected);
 
   void add(T item) {
     _items.add(item);
@@ -21,11 +21,11 @@ class Model<T> extends ChangeNotifier {
     //notifyListeners();
   }
 
-  void toggleSelected(int index) {
-    if (!_selected.contains(index)) {
-      _selected.add(index);
+  void toggleSelected(String elem) {
+    if (!_selected.contains(elem)) {
+      _selected.add(elem);
     } else {
-      _selected.remove(index);
+      _selected.remove(elem);
     }
     notifyListeners();
   }

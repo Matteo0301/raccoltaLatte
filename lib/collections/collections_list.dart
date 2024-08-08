@@ -70,11 +70,19 @@ class CollectionsList extends StatelessWidget {
                                       ),
                                     ])),
                                 selected: collections.selected.contains(
-                                    collections.items.length - index - 1),
+                                    collections
+                                        .items[collections.items.length -
+                                            index -
+                                            1]
+                                        .date
+                                        .toIso8601String()),
                                 selectedTileColor: Colors.blue[100],
                                 onTap: () {
-                                  collections.toggleSelected(
-                                      collections.items.length - index - 1);
+                                  collections.toggleSelected(collections
+                                      .items[
+                                          collections.items.length - index - 1]
+                                      .date
+                                      .toIso8601String());
                                 },
                               );
                             })))

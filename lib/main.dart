@@ -26,15 +26,15 @@ Future<void> main() async {
 
   await remoteConfig.setDefaults(const {});
 
-  await remoteConfig.fetchAndActivate();
-
-  remoteConfig.onConfigUpdated.listen((event) async {
-    await remoteConfig.activate();
-
-    // Use the new config values here.
-  });
-
   if (!kIsWeb) {
+    await remoteConfig.fetchAndActivate();
+
+    remoteConfig.onConfigUpdated.listen((event) async {
+      await remoteConfig.activate();
+
+      // Use the new config values here.
+    });
+
     // Pass all uncaught "fatal" errors from the framework to Crashlytics
     FlutterError.onError = (errorDetails) {
       FirebaseCrashlytics.instance.recordFlutterFatalError(errorDetails);

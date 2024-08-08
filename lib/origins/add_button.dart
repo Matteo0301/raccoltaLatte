@@ -10,11 +10,11 @@ class AddButton extends StatelessWidget {
   const AddButton({super.key});
 
   static Future<void> inputPopup(
-      BuildContext context, Model<Origin> origins, Origin? initial) async {
+      BuildContext context, Model<Origin> origins, String? initialName) async {
     String? s = await showDialog(
         context: context,
         builder: (_) => OriginForm(
-              initial: initial,
+              initial: initialName,
             ));
     final tmp = s?.split(';');
     if (tmp == null) {
@@ -33,7 +33,7 @@ class AddButton extends StatelessWidget {
       return;
     }
     final o = Origin(tmp[0], coordinates.item1, coordinates.item2, '');
-    if (initial == null) {
+    if (initialName == null) {
       await addOrigin(o)
           .then((value) => {origins.add(o), origins.notifyListeners()})
           .catchError((error) {
@@ -44,7 +44,7 @@ class AddButton extends StatelessWidget {
         return <dynamic>{};
       });
     } else {
-      await updateOrigin(initial.name, o)
+      await updateOrigin(initialName, o)
           .then((value) => {origins.clearSelected(), origins.notifyListeners()})
           .onError((error, stackTrace) => {
                 ScaffoldMessenger.of(context).showSnackBar(
@@ -68,11 +68,11 @@ class AddButton extends StatelessWidget {
 class OriginForm extends StatelessWidget {
   OriginForm({super.key, required this.initial});
   final _formKey = GlobalKey<FormState>();
-  final Origin? initial;
+  final String? initial;
 
   @override
   Widget build(BuildContext context) {
-    var nameController = TextEditingController(text: initial?.name);
+    var nameController = TextEditingController(text: initial);
     var addressController = TextEditingController();
     return AddDialog(
         formKey: _formKey,

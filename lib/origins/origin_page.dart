@@ -2,6 +2,7 @@ import 'package:raccoltalatte/drawer.dart';
 import 'package:raccoltalatte/model.dart';
 import 'package:raccoltalatte/origins/origin.dart';
 import 'package:raccoltalatte/origins/origins_list.dart';
+import 'package:raccoltalatte/requests.dart';
 import 'package:raccoltalatte/utils.dart';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
@@ -64,44 +65,6 @@ class OriginPage extends StatelessWidget {
             centerTitle: true,
             automaticallyImplyLeading: false,
             actions: [
-              Consumer<Model<Origin>>(
-                builder: (context, origins, child) {
-                  if (origins.selected.isEmpty) {
-                    return const SizedBox.shrink();
-                  } else {
-                    return IconButton(
-                        onPressed: () async {
-                          bool? confirm = await showDialog(
-                              context: context,
-                              builder: (_) {
-                                return ConfirmDialog(context: context);
-                              });
-                          if (confirm == null || !confirm) {
-                            return;
-                          }
-                          List<Origin> o = [];
-                          for (var index in origins.selected) {
-                            o.add(origins.items[index]);
-                          }
-                          // TODO
-                          /* removeOrigins(o)
-                              .then((value) => {
-                                    origins.clearSelected(),
-                                    origins.notifyListeners()
-                                  })
-                              .catchError((error) {
-                            ScaffoldMessenger.of(context).showSnackBar(
-                              SnackBar(content: Text(error.toString())),
-                            );
-
-                            origins.notifyListeners();
-                            return <dynamic>{};
-                          }); */
-                        },
-                        icon: const Icon(Icons.delete));
-                  }
-                },
-              ),
               Consumer<Model<Origin>>(builder: (context, origins, child) {
                 return UpdateButton(model: origins);
               }),

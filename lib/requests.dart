@@ -98,21 +98,22 @@ Future<List<Origin>> getOrigins() async {
   }
 }
 
-/* Future<void> removeOrigins(List<Origin> origins) async {
-  try {
-    for (var o in origins) {
-      debugPrint('$baseUrl/origins/${o.name}');
-      final response = await http.delete(
-          Uri.https(baseUrl, '/origins/${o.name}'),
-          headers: {HttpHeaders.authorizationHeader: 'Bearer $token'});
-      if (response.statusCode != 201) {
-        return Future.error('Operazione non permessa');
-      }
+Future<void> removeOrigins(String name) async {
+  /* for (var o in origins) {
+    debugPrint('$baseUrl/origins/${o.name}');
+    final response = await http.delete(Uri.https(baseUrl, '/origins/${o.name}'),
+        headers: {HttpHeaders.authorizationHeader: 'Bearer $token'});
+    if (response.statusCode != 201) {
+      return Future.error('Operazione non permessa');
     }
-  } catch (e) {
-    return Future.error('Impossibile connettersi al server');
-  }
-} */
+  } */
+  String id =
+      (await db.collection('origins').where('name', isEqualTo: name).get())
+          .docs
+          .first
+          .id;
+  db.collection('origins').doc(id).delete();
+}
 
 Future<void> updateOrigin(String name, Origin origin) async {
   /* final response = await http.patch(Uri.https(baseUrl, '/origins/$name'),
@@ -128,7 +129,12 @@ Future<void> updateOrigin(String name, Origin origin) async {
   if (response.statusCode != 204) {
     return Future.error('Operazione non permessa');
   } */
-  db.collection('origins').doc(origin.id).set(origin.toJson());
+  String id =
+      (await db.collection('origins').where('name', isEqualTo: name).get())
+          .docs
+          .first
+          .id;
+  db.collection('origins').doc(id).set(origin.toJson());
 }
 
 Future<void> addOrigin(Origin origin) async {

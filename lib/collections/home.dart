@@ -125,8 +125,8 @@ class HomePageState extends State<HomePage> {
                               return;
                             }
                             List<Collection> coll = [];
-                            for (var index in collections.selected) {
-                              coll.add(collections.items[index]);
+                            for (var i = 0; i < collections.items.length; i++) {
+                              coll.add(collections.items[i]);
                             }
                             removeCollections(coll)
                                 .then((value) => {

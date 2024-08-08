@@ -165,8 +165,8 @@ class AdminCheckboxState extends State<AdminCheckbox> {
 }
 
 class Button<T> extends StatelessWidget {
-  final Future<void> Function(BuildContext context, Model<T> model, T? initial)
-      inputPopup;
+  final Future<void> Function(
+      BuildContext context, Model<T> model, String? initial) inputPopup;
   final Model<T> model;
 
   const Button({super.key, required this.inputPopup, required this.model});
@@ -198,8 +198,8 @@ class UpdateButton<T> extends StatelessWidget {
 
 class ModifyButton<T> extends StatelessWidget {
   final Model<T> model;
-  final Future<void> Function(BuildContext context, Model<T> model, T? initial)
-      inputPopup;
+  final Future<void> Function(
+      BuildContext context, Model<T> model, String selected) inputPopup;
 
   const ModifyButton(
       {super.key, required this.model, required this.inputPopup});
@@ -211,7 +211,7 @@ class ModifyButton<T> extends StatelessWidget {
     } else {
       return IconButton(
           onPressed: () {
-            inputPopup(context, model, model.items[model.selected.first]);
+            inputPopup(context, model, model.selected.first);
           },
           icon: const Icon(Icons.create));
     }
