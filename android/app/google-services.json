@@ -1,0 +1,48 @@
+{
+  "project_info": {
+    "project_number": "950079165919",
+    "project_id": "raccoltalatte-2fd1c",
+    "storage_bucket": "raccoltalatte-2fd1c.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:950079165919:android:f622ac089beec2f516a06a",
+        "android_client_info": {
+          "package_name": "com.example.app_raccolta_new"
+        }
+      },
+      "oauth_client": [],
+      "api_key": [
+        {
+          "current_key": "AIzaSyBaKYkxPg0jWdu5DsoMHiG-Htx4Uh6SHgw"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": []
+        }
+      }
+    },
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:950079165919:android:eda5701063dd57ec16a06a",
+        "android_client_info": {
+          "package_name": "com.example.raccoltalatte"
+        }
+      },
+      "oauth_client": [],
+      "api_key": [
+        {
+          "current_key": "AIzaSyBaKYkxPg0jWdu5DsoMHiG-Htx4Uh6SHgw"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": []
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}
