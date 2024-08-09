@@ -24,11 +24,10 @@ Future<void> main() async {
     minimumFetchInterval: const Duration(hours: 1),
   ));
 
-  await remoteConfig.setDefaults(const {
-    saveFileKey: false,
-  });
-
   if (!kIsWeb) {
+    await remoteConfig.setDefaults(const {
+      saveFileKey: false,
+    });
     await remoteConfig.fetchAndActivate();
 
     remoteConfig.onConfigUpdated.listen((event) async {

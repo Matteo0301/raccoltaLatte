@@ -1,5 +1,4 @@
 import 'package:flutter/material.dart';
-import 'package:raccoltalatte/model.dart';
 
 class AddDialog extends AlertDialog {
   final GlobalKey<FormState> formKey;
@@ -49,10 +48,9 @@ class AddDialog extends AlertDialog {
         );
 }
 
-// TODO Image dialog
 class ImageDialog extends AlertDialog {
   final BuildContext context;
-  final String url;
+  final String? url;
 
   ImageDialog({super.key, required this.context, required this.url})
       : super(
@@ -61,9 +59,11 @@ class ImageDialog extends AlertDialog {
               padding: const EdgeInsets.all(10),
               height: 300,
               width: 300,
-              child: Image.network(
-                url,
-              )),
+              child: url != null
+                  ? Image.network(
+                      url,
+                    )
+                  : const Text('File non trovato')),
           actions: [
             TextButton(
               onPressed: () => Navigator.pop(context),
@@ -141,38 +141,22 @@ class AdminCheckboxState extends State<AdminCheckbox> {
 }
 
 class Button<T> extends StatelessWidget {
-  final Future<void> Function(
-      BuildContext context, Model<T> model, String? initial) inputPopup;
-  final Model<T> model;
+  final Future<void> Function(BuildContext context, String? initial) inputPopup;
 
-  const Button({super.key, required this.inputPopup, required this.model});
+  const Button({super.key, required this.inputPopup});
 
   @override
   Widget build(BuildContext context) {
     return FloatingActionButton.extended(
-      onPressed: () async => inputPopup(context, model, null),
+      onPressed: () async => inputPopup(context, null),
       label: const Text('Aggiungi'),
       icon: const Icon(Icons.add),
     );
   }
 }
 
-class UpdateButton<T> extends StatelessWidget {
-  final Model<T> model;
-
-  const UpdateButton({super.key, required this.model});
-
-  @override
-  Widget build(BuildContext context) {
-    return IconButton(
-        onPressed: () {
-          model.notifyListeners();
-        },
-        icon: const Icon(Icons.update));
-  }
-}
-
-class ModifyButton<T> extends StatelessWidget {
+// TODO Modify button
+/* class ModifyButton<T> extends StatelessWidget {
   final Model<T> model;
   final Future<void> Function(
       BuildContext context, Model<T> model, String selected) inputPopup;
@@ -192,7 +176,7 @@ class ModifyButton<T> extends StatelessWidget {
           icon: const Icon(Icons.create));
     }
   }
-}
+} */
 
 class ConfirmDialog extends AlertDialog {
   final BuildContext context;

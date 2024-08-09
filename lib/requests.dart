@@ -11,6 +11,7 @@ import 'package:http/http.dart' as http;
 
 final db = FirebaseFirestore.instance;
 final storage = FirebaseStorage.instance;
+const String imagePrefix = 'image_';
 
 Future<List<Origin>> getOrigins() async {
   try {
@@ -23,7 +24,7 @@ Future<List<Origin>> getOrigins() async {
   }
 }
 
-Future<void> removeOrigins(String name) async {
+Future<void> removeOrigin(String name) async {
   String id =
       (await db.collection('origins').where('name', isEqualTo: name).get())
           .docs
@@ -45,15 +46,19 @@ Future<void> addOrigin(Origin origin) async {
   await db.collection('origins').add(origin.toJson());
 }
 
-Future<List<Collection>> getCollections(
-    String username, bool admin, String startDate, String endDate) async {
+getCollectionsQuery(
+    String username, bool admin, String startDate, String endDate) {
   final baseQuery = db
       .collection('collections')
       .where('date', isGreaterThan: startDate)
       .where('date', isLessThan: endDate);
-  final finalQuery =
-      (admin) ? baseQuery : baseQuery.where('user', isEqualTo: username);
-  return (await finalQuery.get())
+  return ((admin) ? baseQuery : baseQuery.where('user', isEqualTo: username));
+}
+
+Future<List<Collection>> getCollections(
+    String username, bool admin, String startDate, String endDate) async {
+  final query = getCollectionsQuery(username, admin, startDate, endDate);
+  return (await query.get())
       .docs
       .map((e) => Collection.fromJson(e.data(), e.id))
       .toList();
@@ -67,28 +72,24 @@ Future<void> uploadFile(File file) async {
   await storage.ref().putFile(file);
 }
 
-Future<String> getImageURL(DateTime date) async {
-  return (await storage.ref().child(date.toIso8601String()).getDownloadURL());
+Future<String?> getImageURL(DateTime date) async {
+  try {
+    return (await storage
+        .ref()
+        .child('$imagePrefix${date.toIso8601String()}')
+        .getDownloadURL());
+  } catch (_) {
+    return null;
+  }
 }
 
-Future<void> removeCollections(List<Collection> collections) async {
-  final WriteBatch batch = db.batch();
-  await db
-      .collection('collections')
-      .where('date',
-          whereIn: collections.map(
-            (e) => e.date.toIso8601String(),
-          ))
-      .get()
-      .then(
-    (querySnapshot) {
-      querySnapshot.docs.forEach((document) {
-        batch.delete(document.reference);
-      });
-
-      return batch.commit();
-    },
-  );
+Future<void> removeCollection(String date) async {
+  String id =
+      (await db.collection('collections').where('date', isEqualTo: date).get())
+          .docs
+          .first
+          .id;
+  db.collection('collections').doc(id).delete();
 }
 
 Future<Tuple2<double, double>> address2Coordinates(String address) async {

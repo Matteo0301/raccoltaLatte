@@ -1,11 +1,6 @@
 import 'package:raccoltalatte/drawer.dart';
-import 'package:raccoltalatte/model.dart';
-import 'package:raccoltalatte/origins/origin.dart';
 import 'package:raccoltalatte/origins/origins_list.dart';
-import 'package:raccoltalatte/requests.dart';
-import 'package:raccoltalatte/utils.dart';
 import 'package:flutter/material.dart';
-import 'package:provider/provider.dart';
 import 'add_button.dart';
 
 class OriginPage extends StatelessWidget {
@@ -57,38 +52,27 @@ class OriginPage extends StatelessWidget {
       ));
     }
 
-    return ChangeNotifierProvider(
-      create: (context) => Model<Origin>(),
-      child: Scaffold(
-        appBar: AppBar(
-            title: Text(title),
-            centerTitle: true,
-            automaticallyImplyLeading: false,
-            actions: [
-              Consumer<Model<Origin>>(builder: (context, origins, child) {
-                return UpdateButton(model: origins);
-              }),
-              Consumer<Model<Origin>>(builder: (context, users, child) {
-                return ModifyButton(
-                    model: users, inputPopup: AddButton.inputPopup);
-              })
-            ],
-            leading: !leading
-                ? null
-                : Builder(builder: (context) {
-                    return IconButton(
-                      icon: const Icon(Icons.menu),
-                      onPressed: () {
-                        if (leading) {
-                          Scaffold.of(context).openDrawer();
-                        }
-                      },
-                    );
-                  })),
-        body: content,
-        drawer: drawer,
-        floatingActionButton: const AddButton(),
-      ),
+    return Scaffold(
+      appBar: AppBar(
+          title: Text(title),
+          centerTitle: true,
+          automaticallyImplyLeading: false,
+          actions: [],
+          leading: !leading
+              ? null
+              : Builder(builder: (context) {
+                  return IconButton(
+                    icon: const Icon(Icons.menu),
+                    onPressed: () {
+                      if (leading) {
+                        Scaffold.of(context).openDrawer();
+                      }
+                    },
+                  );
+                })),
+      body: content,
+      drawer: drawer,
+      floatingActionButton: const AddButton(),
     );
   }
 }

@@ -4,7 +4,6 @@ import 'package:path_provider/path_provider.dart';
 import 'package:raccoltalatte/collections/collection.dart';
 import 'package:raccoltalatte/config.dart';
 import 'package:raccoltalatte/date_time_picker.dart';
-import 'package:raccoltalatte/model.dart';
 import 'package:raccoltalatte/origins_dropdown.dart';
 import 'package:raccoltalatte/recognizer.dart';
 import 'package:raccoltalatte/requests.dart';
@@ -12,7 +11,6 @@ import 'package:raccoltalatte/utils.dart';
 import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart' hide TextField;
 import 'package:image_picker/image_picker.dart';
-import 'package:provider/provider.dart';
 import 'package:universal_platform/universal_platform.dart';
 
 class AddButton extends StatefulWidget {
@@ -53,8 +51,7 @@ class AddButtonState extends State<AddButton> {
     return file;
   }
 
-  Future<void> inputPopup(
-      BuildContext context, Model<Collection> collections, String? _) async {
+  Future<void> inputPopup(BuildContext context, String? _) async {
     date = DateTime.now();
     String? filePath = await obtainImage();
     final String recognized;
@@ -114,31 +111,24 @@ class AddButtonState extends State<AddButton> {
     if (!kIsWeb && filePath != null && saveFile) {
       final String path = (await getApplicationDocumentsDirectory()).path;
       File image = File(filePath);
-      File newImage = await image.copy('$path/${date.toIso8601String()}.jpg');
+      File newImage =
+          await image.copy('$path/$imagePrefix${date.toIso8601String()}.jpg');
       uploadFile(newImage);
     }
 
     final Collection c =
         Collection(widget.username, origin, quantity, quantity2, date, '');
-    await addCollection(c, filePath)
-        .then((value) => {collections.add(c), collections.notifyListeners()})
-        .catchError((error) {
+    await addCollection(c, filePath).catchError((error) {
       if (context.mounted) {
         ScaffoldMessenger.of(context).showSnackBar(
           SnackBar(content: Text(error.toString())),
         );
       }
-      collections.notifyListeners();
-      return <dynamic>{};
     });
   }
 
   @override
   Widget build(BuildContext context) {
-    return Consumer<Model<Collection>>(
-      builder: (context, collections, child) {
-        return Button<Collection>(inputPopup: inputPopup, model: collections);
-      },
-    );
+    return Button<Collection>(inputPopup: inputPopup);
   }
 }

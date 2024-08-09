@@ -1,101 +1,56 @@
-import 'package:raccoltalatte/collections/collection.dart';
-import 'package:raccoltalatte/model.dart';
+import 'package:firebase_ui_firestore/firebase_ui_firestore.dart';
+import 'package:raccoltalatte/requests.dart';
 import 'package:raccoltalatte/utils.dart';
 import 'package:flutter/material.dart';
-import 'package:provider/provider.dart';
 
 class CollectionsList extends StatelessWidget {
-  const CollectionsList(this.username, this.admin, this.date, this.request,
-      {super.key});
+  const CollectionsList(this.username, this.admin, this.date, {super.key});
   final String username;
   final bool admin;
   final DateTime date;
-  final ValueGetter<Future<List<Collection>>> request;
 
   @override
   Widget build(BuildContext context) {
-    return Consumer<Model<Collection>>(
-      builder: (context, collections, child) {
-        return FutureBuilder(
-          future: request(),
-          builder: (context, snapshot) {
-            if (snapshot.hasError) {
-              return const Center(child: Text('Nessun dato trovato'));
-            } else if (snapshot.hasData) {
-              List<Collection> list = snapshot.data as List<Collection>;
-              collections.removeAll();
-              for (var coll in list) {
-                collections.add(coll);
-              }
-              if (list.isEmpty) {
-                return const Center(child: Text('Nessun dato trovato'));
-              }
-              return Column(children: [
-                Expanded(
-                    flex: 1,
-                    child: Text(
-                      'Totale: ${list.fold(0, (previousValue, element) => previousValue + element.quantity)}',
-                      style: const TextStyle(
-                          fontSize: 20, fontWeight: FontWeight.bold),
-                    )),
-                Expanded(
-                    flex: 15,
-                    child: Center(
-                        child: ListView.builder(
-                            itemCount: collections.items.length,
-                            itemBuilder: (context, index) {
-                              return ListTile(
-                                title: Text(
-                                    style: const TextStyle(fontSize: 20),
-                                    'Conferente: ${collections.items[collections.items.length - index - 1].origin}'),
-                                subtitle: Text(
-                                    'Quantità: ${collections.items[collections.items.length - index - 1].quantity}, Seconda: ${collections.items[collections.items.length - index - 1].quantity2}'),
-                                trailing: Container(
-                                    width: 300,
-                                    alignment: Alignment.centerRight,
-                                    child: Row(children: [
-                                      Text(
-                                          '${collections.items[collections.items.length - index - 1].user}   (${collections.items[collections.items.length - index - 1].date.day.toString().padLeft(2, '0')}/${collections.items[collections.items.length - index - 1].date.month.toString().padLeft(2, '0')}/${collections.items[collections.items.length - index - 1].date.year} ${collections.items[collections.items.length - index - 1].date.hour}:${collections.items[collections.items.length - index - 1].date.minute.toString().padLeft(2, '0')})'),
-                                      IconButton(
-                                        icon:
-                                            const Icon(Icons.arrow_forward_ios),
-                                        onPressed: () {
-                                          showDialog(
-                                              context: context,
-                                              builder: (context) => ImageDialog(
-                                                  context: context,
-                                                  url: collections
-                                                      .items[collections
-                                                              .items.length -
-                                                          index -
-                                                          1]
-                                                      .date
-                                                      .toIso8601String()));
-                                        },
-                                      ),
-                                    ])),
-                                selected: collections.selected.contains(
-                                    collections
-                                        .items[collections.items.length -
-                                            index -
-                                            1]
-                                        .date
-                                        .toIso8601String()),
-                                selectedTileColor: Colors.blue[100],
-                                onTap: () {
-                                  collections.toggleSelected(collections
-                                      .items[
-                                          collections.items.length - index - 1]
-                                      .date
-                                      .toIso8601String());
-                                },
-                              );
-                            })))
-              ]);
-            } else {
-              return const Center(child: CircularProgressIndicator());
-            }
-          },
+    DateTime end = date.copyWith(month: date.month + 1, day: 0, hour: 12);
+    DateTime start = end.copyWith(day: 0, hour: 12);
+    String endDate = end.toIso8601String();
+    String startDate = start.toIso8601String();
+    return FirestoreListView(
+      query: getCollectionsQuery(username, admin, startDate, endDate),
+      itemBuilder: (context, doc) {
+        final DateTime date = DateTime.parse(doc['date']);
+        return ListTile(
+          title: Text(
+              style: const TextStyle(fontSize: 20),
+              'Conferente: ${doc['origin']}'),
+          subtitle: Text(
+              'Quantità: ${doc['quantity']}, Seconda: ${doc['quantity2']}'),
+          trailing: Row(mainAxisSize: MainAxisSize.min, children: [
+            Text(
+                '${doc['user']}   (${date.day.toString().padLeft(2, '0')}/${date.month.toString().padLeft(2, '0')}/${date.year} ${date.hour}:${date.minute.toString().padLeft(2, '0')})'),
+            IconButton(
+              icon: const Icon(Icons.arrow_forward_ios),
+              onPressed: () async {
+                String? url = await getImageURL(date);
+                if (context.mounted) {
+                  showDialog(
+                      context: context,
+                      builder: (context) =>
+                          ImageDialog(context: context, url: url));
+                }
+              },
+            ),
+            IconButton(
+                onPressed: () =>
+                    removeCollection(doc['date']).catchError((error) {
+                      if (context.mounted) {
+                        ScaffoldMessenger.of(context).showSnackBar(
+                          SnackBar(content: Text(error.toString())),
+                        );
+                      }
+                    }),
+                icon: const Icon(Icons.delete))
+          ]),
         );
       },
     );
