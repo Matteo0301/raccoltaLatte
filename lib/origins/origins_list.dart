@@ -1,7 +1,9 @@
 import 'package:firebase_ui_firestore/firebase_ui_firestore.dart';
 import 'package:raccoltalatte/origin_details/details_page.dart';
+import 'package:raccoltalatte/origins/origin.dart';
 import 'package:raccoltalatte/requests.dart';
 import 'package:flutter/material.dart';
+import 'package:raccoltalatte/origins/add_button.dart';
 
 class OriginsList extends StatelessWidget {
   const OriginsList({super.key, required this.admin, required this.username});
@@ -35,7 +37,13 @@ class OriginsList extends StatelessWidget {
                       SnackBar(content: Text(error.toString())),
                     );
                   }),
-              icon: const Icon(Icons.delete))
+              icon: const Icon(Icons.delete)),
+          IconButton(
+              onPressed: () async {
+                String name = doc['name'];
+                await AddButton.inputPopup(context, name);
+              },
+              icon: const Icon(Icons.create))
         ]),
       ),
     );
