@@ -57,7 +57,7 @@ class OriginPage extends StatelessWidget {
           title: Text(title),
           centerTitle: true,
           automaticallyImplyLeading: false,
-          actions: [],
+          actions: const [],
           leading: !leading
               ? null
               : Builder(builder: (context) {

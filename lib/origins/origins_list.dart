@@ -1,6 +1,5 @@
 import 'package:firebase_ui_firestore/firebase_ui_firestore.dart';
 import 'package:raccoltalatte/origin_details/details_page.dart';
-import 'package:raccoltalatte/origins/origin.dart';
 import 'package:raccoltalatte/requests.dart';
 import 'package:flutter/material.dart';
 import 'package:raccoltalatte/origins/add_button.dart';

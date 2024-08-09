@@ -1,3 +1,15 @@
 {
-    "cmake.configureOnOpen": false
+    "cmake.configureOnOpen": false,
+    "cSpell.words": [
+        "Conferente",
+        "Conferenti",
+        "Dettagli",
+        "Firestore",
+        "Immagine",
+        "Inserisci",
+        "Quantità",
+        "raccoltalatte",
+        "Seconda",
+        "trackpad"
+    ]
 }

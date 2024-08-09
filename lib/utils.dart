@@ -155,29 +155,6 @@ class Button<T> extends StatelessWidget {
   }
 }
 
-// TODO Modify button
-/* class ModifyButton<T> extends StatelessWidget {
-  final Model<T> model;
-  final Future<void> Function(
-      BuildContext context, Model<T> model, String selected) inputPopup;
-
-  const ModifyButton(
-      {super.key, required this.model, required this.inputPopup});
-
-  @override
-  Widget build(BuildContext context) {
-    if (model.selected.length != 1) {
-      return const SizedBox.shrink();
-    } else {
-      return IconButton(
-          onPressed: () {
-            inputPopup(context, model, model.selected.first);
-          },
-          icon: const Icon(Icons.create));
-    }
-  }
-} */
-
 class ConfirmDialog extends AlertDialog {
   final BuildContext context;
 
