@@ -1,5 +1,6 @@
 import 'dart:io';
 
+import 'package:firebase_analytics/firebase_analytics.dart';
 import 'package:path_provider/path_provider.dart';
 import 'package:raccoltalatte/collections/collection.dart';
 import 'package:raccoltalatte/config.dart';
@@ -106,6 +107,15 @@ class AddButtonState extends State<AddButton> {
     var tmp = s.split(';');
     final quantity = int.parse(tmp[0]);
     final quantity2 = int.parse(tmp[1]);
+
+    if (recognized != '') {
+      int recognizedInt = int.parse(recognized);
+      FirebaseAnalytics.instance.logEvent(name: 'ocr', parameters: {
+        'equals': (recognizedInt == quantity),
+        'recognized': recognizedInt,
+        'real': quantity
+      });
+    }
 
     // save file
     if (!kIsWeb && filePath != null && saveFile) {

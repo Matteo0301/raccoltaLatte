@@ -1,3 +1,4 @@
+import 'package:firebase_analytics/firebase_analytics.dart';
 import 'package:raccoltalatte/auth.dart';
 import 'package:raccoltalatte/collections/home.dart';
 import 'package:firebase_auth/firebase_auth.dart';
@@ -65,6 +66,7 @@ class LoginState extends State<Login> {
                         try {
                           await login(username, password);
                           final LoggedUser? user = await getUserData();
+                          FirebaseAnalytics.instance.logLogin();
 
                           if (user != null && context.mounted) {
                             Navigator.push(
