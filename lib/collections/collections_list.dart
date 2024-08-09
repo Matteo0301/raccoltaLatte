@@ -64,8 +64,13 @@ class CollectionsList extends StatelessWidget {
                                               context: context,
                                               builder: (context) => ImageDialog(
                                                   context: context,
-                                                  url:
-                                                      'collections/${collections.items[collections.items.length - index - 1].date.toIso8601String()}'));
+                                                  url: collections
+                                                      .items[collections
+                                                              .items.length -
+                                                          index -
+                                                          1]
+                                                      .date
+                                                      .toIso8601String()));
                                         },
                                       ),
                                     ])),

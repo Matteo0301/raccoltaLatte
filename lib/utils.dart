@@ -50,7 +50,7 @@ class AddDialog extends AlertDialog {
 }
 
 // TODO Image dialog
-/* class ImageDialog extends AlertDialog {
+class ImageDialog extends AlertDialog {
   final BuildContext context;
   final String url;
 
@@ -63,31 +63,7 @@ class AddDialog extends AlertDialog {
               width: 300,
               child: Image.network(
                 url,
-                headers: {HttpHeaders.authorizationHeader: 'Bearer $token'},
-                errorBuilder: (context, error, stackTrace) =>
-                    const Text('Nessuna immagine disponibile'),
               )),
-          actions: [
-            TextButton(
-              onPressed: () => Navigator.pop(context),
-              child: const Text('Annulla'),
-            ),
-          ],
-        );
-} */
-
-class ImageDialog extends AlertDialog {
-  final BuildContext context;
-  final String url;
-
-  ImageDialog({super.key, required this.context, required this.url})
-      : super(
-          title: const Text('Immagine'),
-          content: Container(
-              padding: const EdgeInsets.all(10),
-              height: 300,
-              width: 300,
-              child: const Text('Nessuna immagine disponibile')),
           actions: [
             TextButton(
               onPressed: () => Navigator.pop(context),

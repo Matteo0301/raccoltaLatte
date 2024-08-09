@@ -1,5 +1,6 @@
 import 'package:firebase_app_check/firebase_app_check.dart';
 import 'package:firebase_remote_config/firebase_remote_config.dart';
+import 'package:raccoltalatte/config.dart';
 import 'package:raccoltalatte/firebase_options.dart';
 import 'package:raccoltalatte/login.dart';
 import 'package:raccoltalatte/theme.dart';
@@ -18,13 +19,14 @@ Future<void> main() async {
   // TODO AppCheck
   //await FirebaseAppCheck.instance.activate();
 
-  final remoteConfig = FirebaseRemoteConfig.instance;
   await remoteConfig.setConfigSettings(RemoteConfigSettings(
     fetchTimeout: const Duration(minutes: 1),
     minimumFetchInterval: const Duration(hours: 1),
   ));
 
-  await remoteConfig.setDefaults(const {});
+  await remoteConfig.setDefaults(const {
+    saveFileKey: false,
+  });
 
   if (!kIsWeb) {
     await remoteConfig.fetchAndActivate();
@@ -32,7 +34,7 @@ Future<void> main() async {
     remoteConfig.onConfigUpdated.listen((event) async {
       await remoteConfig.activate();
 
-      // Use the new config values here.
+      saveFile = remoteConfig.getBool(saveFileKey);
     });
 
     // Pass all uncaught "fatal" errors from the framework to Crashlytics

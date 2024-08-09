@@ -18,7 +18,6 @@ class MLKitTextRecognizer {
     final recognized = await recognizer.processImage(image);
     String res = recognized.text;
     res = res.replaceAll(RegExp(r'[^0-9]'), '');
-    debugPrint(res);
     return res;
   }
 }

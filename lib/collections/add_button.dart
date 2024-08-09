@@ -1,4 +1,8 @@
+import 'dart:io';
+
+import 'package:path_provider/path_provider.dart';
 import 'package:raccoltalatte/collections/collection.dart';
+import 'package:raccoltalatte/config.dart';
 import 'package:raccoltalatte/date_time_picker.dart';
 import 'package:raccoltalatte/model.dart';
 import 'package:raccoltalatte/origins_dropdown.dart';
@@ -53,14 +57,12 @@ class AddButtonState extends State<AddButton> {
       BuildContext context, Model<Collection> collections, String? _) async {
     date = DateTime.now();
     String? filePath = await obtainImage();
-    debugPrint('File path: $filePath');
     final String recognized;
     if (filePath != null) {
       recognized = await recognizer.processImage(filePath);
     } else {
       recognized = '';
     }
-    debugPrint(recognized);
 
     String? s;
     if (context.mounted) {
@@ -107,7 +109,15 @@ class AddButtonState extends State<AddButton> {
     var tmp = s.split(';');
     final quantity = int.parse(tmp[0]);
     final quantity2 = int.parse(tmp[1]);
-    debugPrint('$date');
+
+    // save file
+    if (!kIsWeb && filePath != null && saveFile) {
+      final String path = (await getApplicationDocumentsDirectory()).path;
+      File image = File(filePath);
+      File newImage = await image.copy('$path/${date.toIso8601String()}.jpg');
+      uploadFile(newImage);
+    }
+
     final Collection c =
         Collection(widget.username, origin, quantity, quantity2, date, '');
     await addCollection(c, filePath)
