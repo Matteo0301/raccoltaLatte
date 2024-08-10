@@ -1,5 +1,8 @@
 import 'package:firebase_app_check/firebase_app_check.dart';
+import 'package:firebase_auth/firebase_auth.dart';
 import 'package:firebase_remote_config/firebase_remote_config.dart';
+import 'package:raccoltalatte/auth.dart';
+import 'package:raccoltalatte/collections/home.dart';
 import 'package:raccoltalatte/config.dart';
 import 'package:raccoltalatte/firebase_options.dart';
 import 'package:raccoltalatte/login.dart';
@@ -61,7 +64,27 @@ class MyApp extends StatelessWidget {
       debugShowCheckedModeBanner: false,
       title: 'Raccolta latte',
       theme: MyTheme().theme,
-      home: const Login(title: 'Raccolta latte'),
+      home: StreamBuilder(
+        stream: FirebaseAuth.instance.authStateChanges(),
+        builder: (context, snapshot) {
+          if (snapshot.hasData) {
+            return FutureBuilder(
+              future: getUserData(),
+              builder: (context, snapshot) {
+                if (snapshot.hasData && snapshot.data != null) {
+                  return Home(
+                    title: 'Raccolta latte',
+                    username: snapshot.data!.username,
+                    admin: snapshot.data!.admin,
+                  );
+                }
+                return const Login(title: 'Raccolta latte');
+              },
+            );
+          }
+          return const Login(title: 'Raccolta latte');
+        },
+      ),
     );
   }
 }

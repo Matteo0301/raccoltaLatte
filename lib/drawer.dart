@@ -1,3 +1,4 @@
+import 'package:raccoltalatte/auth.dart';
 import 'package:raccoltalatte/collections/home.dart';
 import 'package:raccoltalatte/collections_table/collections_table.dart';
 import 'package:raccoltalatte/origins/origin_page.dart';
@@ -101,7 +102,7 @@ class AppMenu extends StatelessWidget {
         ),
         title: const Text('Logout'),
         onTap: () {
-          Navigator.of(context).popUntil((route) => route.isFirst);
+          logout();
         },
       ),
       const AboutListTile(
