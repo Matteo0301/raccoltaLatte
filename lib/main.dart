@@ -19,9 +19,6 @@ Future<void> main() async {
     options: DefaultFirebaseOptions.currentPlatform,
   );
 
-  // TODO AppCheck
-  //await FirebaseAppCheck.instance.activate();
-
   await remoteConfig.setConfigSettings(RemoteConfigSettings(
     fetchTimeout: const Duration(minutes: 1),
     minimumFetchInterval: const Duration(hours: 1),
@@ -31,13 +28,16 @@ Future<void> main() async {
     await remoteConfig.setDefaults(const {
       saveFileKey: false,
     });
-    await remoteConfig.fetchAndActivate();
 
     remoteConfig.onConfigUpdated.listen((event) async {
       await remoteConfig.activate();
 
       saveFile = remoteConfig.getBool(saveFileKey);
+      appCheck = remoteConfig.getBool(appCheckKey);
     });
+
+    // TODO AppCheck
+    //await FirebaseAppCheck.instance.activate();
 
     // Pass all uncaught "fatal" errors from the framework to Crashlytics
     FlutterError.onError = (errorDetails) {
