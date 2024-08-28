@@ -12,13 +12,15 @@ import 'package:http/http.dart' as http;
 final db = FirebaseFirestore.instance;
 final storage = FirebaseStorage.instance;
 const String imagePrefix = 'image_';
+const String storagePath = 'images/';
 
 Future<List<Origin>> getOrigins() async {
   try {
-    return (await db.collection('origins').get())
+    final list = (await db.collection('origins').get())
         .docs
         .map((e) => Origin.fromJson(e.data(), e.id))
         .toList();
+    return list;
   } catch (e) {
     return Future.error('Impossibile effettuare l\'operazione');
   }
@@ -52,7 +54,9 @@ getCollectionsQuery(
       .collection('collections')
       .where('date', isGreaterThan: startDate)
       .where('date', isLessThan: endDate);
-  return ((admin) ? baseQuery : baseQuery.where('user', isEqualTo: username));
+  final finalQuery =
+      ((admin) ? baseQuery : baseQuery.where('user', isEqualTo: username));
+  return finalQuery.orderBy('date', descending: true);
 }
 
 Future<List<Collection>> getCollections(
@@ -68,14 +72,16 @@ Future<void> addCollection(Collection collection, String? filename) async {
   await db.collection('collections').add(collection.toJson());
 }
 
-Future<void> uploadFile(File file) async {
-  await storage.ref().putFile(file);
+Future<void> uploadFile(File file, DateTime date) async {
+  await storage
+      .ref(storagePath + imagePrefix + date.toIso8601String())
+      .putFile(file);
 }
 
 Future<String?> getImageURL(DateTime date) async {
   try {
     return (await storage
-        .ref()
+        .ref(storagePath)
         .child('$imagePrefix${date.toIso8601String()}')
         .getDownloadURL());
   } catch (_) {
