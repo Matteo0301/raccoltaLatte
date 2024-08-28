@@ -1,6 +1,7 @@
 import 'dart:io';
 
 import 'package:firebase_analytics/firebase_analytics.dart';
+import 'package:gal/gal.dart';
 import 'package:path_provider/path_provider.dart';
 import 'package:raccoltalatte/collections/collection.dart';
 import 'package:raccoltalatte/config.dart';
@@ -41,15 +42,27 @@ class AddButtonState extends State<AddButton> {
     final String? file;
     if (!kIsWeb && (UniversalPlatform.isAndroid || UniversalPlatform.isIOS)) {
       file = (await _picker.pickImage(
-              source: ImageSource.camera,
-              maxHeight: 200,
-              maxWidth: 100,
-              imageQuality: 0))
+              source: ImageSource.camera, maxHeight: 200, maxWidth: 100))
           ?.path;
     } else {
       file = null;
     }
     return file;
+  }
+
+  Future<String?> getExtStorageOrDownloadsDirPath() async {
+    if (!kIsWeb) {
+      final documentsDir = await getApplicationDocumentsDirectory();
+      if (Platform.isAndroid) {
+        //final extStorageDir = await getExternalStorageDirectory();
+        //return extStorageDir?.path ?? documentsDir.path;
+        return '/storage/emulated/0/Download';
+      } else {
+        final downloadsDir = await getDownloadsDirectory();
+        return downloadsDir?.path ?? documentsDir.path;
+      }
+    }
+    return null;
   }
 
   Future<void> inputPopup(BuildContext context, String? _) async {
@@ -118,12 +131,12 @@ class AddButtonState extends State<AddButton> {
     }
 
     // save file
-    if (!kIsWeb && filePath != null && saveFile) {
-      final String path = (await getApplicationDocumentsDirectory()).path;
-      File image = File(filePath);
-      File newImage =
-          await image.copy('$path/$imagePrefix${date.toIso8601String()}.jpg');
-      uploadFile(newImage);
+    if (!kIsWeb && filePath != null) {
+      //await image.copy('$path/$imagePrefix${date.toIso8601String()}.jpg');
+      Gal.putImage(filePath);
+      if (saveFile) {
+        uploadFile(File(filePath), date);
+      }
     }
 
     final Collection c =

@@ -26,7 +26,7 @@ Future<void> main() async {
 
   if (!kIsWeb) {
     await remoteConfig.setDefaults(const {
-      saveFileKey: false,
+      saveFileKey: true,
     });
 
     remoteConfig.onConfigUpdated.listen((event) async {

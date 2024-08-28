@@ -36,12 +36,12 @@ class OriginsDropdown extends StatelessWidget {
   }
 
   getSortedOrigins() async {
-    final newOrigins;
+    final List<Origin> newOrigins;
     final Position location = await getLocation();
-    if (origins == null) {
+    if (origins == null || origins == []) {
       newOrigins = await getOrigins();
     } else {
-      newOrigins = origins;
+      newOrigins = origins!;
     }
 
     newOrigins
