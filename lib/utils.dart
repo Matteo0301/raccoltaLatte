@@ -1,3 +1,5 @@
+import 'dart:math';
+
 import 'package:flutter/material.dart';
 
 class AddDialog extends AlertDialog {
@@ -57,11 +59,12 @@ class ImageDialog extends AlertDialog {
           title: const Text('Immagine'),
           content: Container(
               padding: const EdgeInsets.all(10),
-              height: 300,
-              width: 300,
+              height: MediaQuery.of(context).size.height,
+              width: MediaQuery.of(context).size.width,
               child: url != null
                   ? Image.network(
                       url,
+                      fit: BoxFit.fitHeight,
                     )
                   : const Text('File non trovato')),
           actions: [
