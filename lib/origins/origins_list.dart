@@ -1,5 +1,6 @@
 import 'package:firebase_ui_firestore/firebase_ui_firestore.dart';
 import 'package:raccoltalatte/origin_details/details_page.dart';
+import 'package:raccoltalatte/origins/gen_excel.dart';
 import 'package:raccoltalatte/requests.dart';
 import 'package:flutter/material.dart';
 import 'package:raccoltalatte/origins/add_button.dart';
@@ -20,7 +21,11 @@ class OriginsList extends StatelessWidget {
         trailing: Row(mainAxisSize: MainAxisSize.min, children: [
           IconButton(
             icon: const Icon(Icons.arrow_forward_ios),
-            onPressed: () => Navigator.push(
+            onPressed: () async => genExcel(
+                '${doc['name']}.xls',
+                (await getOriginMap(admin, username, doc['name'])),
+                ['sera', 'mattina']),
+            /* () => Navigator.push(
                 context,
                 MaterialPageRoute(
                     builder: (_) => OriginDetails(
@@ -28,7 +33,7 @@ class OriginsList extends StatelessWidget {
                           admin: admin,
                           origin: doc['name'],
                           username: username,
-                        ))),
+                        ))) */
           ),
           IconButton(
               onPressed: () => removeOrigin(doc['name']).catchError((error) {

@@ -64,7 +64,7 @@ Future<List<Collection>> getCollections(
   final query = getCollectionsQuery(username, admin, startDate, endDate);
   return (await query.get())
       .docs
-      .map((e) => Collection.fromJson(e.data(), e.id))
+      .map<Collection>((e) => Collection.fromJson(e.data(), e.id))
       .toList();
 }
 
