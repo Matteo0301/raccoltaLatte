@@ -2,6 +2,7 @@ import 'package:raccoltalatte/collections/add_button.dart';
 import 'package:raccoltalatte/collections/collections_list.dart';
 import 'package:raccoltalatte/drawer.dart';
 import 'package:flutter/material.dart';
+import 'package:raccoltalatte/origins/gen_excel.dart';
 
 class Home extends StatelessWidget {
   const Home(
@@ -112,6 +113,14 @@ class HomePageState extends State<HomePage> {
                     });
                   },
                   icon: const Icon(Icons.arrow_forward_ios)),
+              IconButton(
+                  onPressed: () async {
+                    final map = await getCollectionsMap(
+                        date, widget.admin, widget.username);
+                    genExcel('${date.month}_${date.year}.xls', map,
+                        map.keys.toList());
+                  },
+                  icon: const Icon(Icons.download)),
             ],
             leading: !leading
                 ? null

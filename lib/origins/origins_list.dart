@@ -20,7 +20,7 @@ class OriginsList extends StatelessWidget {
             style: const TextStyle(fontSize: 20), 'Conferente: ${doc['name']}'),
         trailing: Row(mainAxisSize: MainAxisSize.min, children: [
           IconButton(
-            icon: const Icon(Icons.arrow_forward_ios),
+            icon: const Icon(Icons.download),
             onPressed: () async => genExcel(
                 '${doc['name']}.xls',
                 (await getOriginMap(admin, username, doc['name'])),

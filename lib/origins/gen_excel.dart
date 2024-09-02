@@ -6,7 +6,7 @@ import 'package:path_provider/path_provider.dart';
 import 'package:raccoltalatte/collections/collection.dart';
 import 'package:raccoltalatte/requests.dart';
 
-Future<List<Collection>> getCollectionList(
+Future<List<Collection>> getCollectionsByOrigin(
     DateTime date, bool admin, String username, String origin) async {
   DateTime end = date.copyWith(month: date.month + 1, day: 0, hour: 12);
   DateTime start = end.copyWith(day: 0, hour: 12);
@@ -15,6 +15,19 @@ Future<List<Collection>> getCollectionList(
   final res = (await getCollections(username, admin, startDate, endDate))
       .where((element) => element.origin == origin)
       .toList();
+  return res;
+}
+
+Future<List<Collection>> getCollectionList(
+  DateTime date,
+  bool admin,
+  String username,
+) async {
+  DateTime end = date.copyWith(month: date.month + 1, day: 0, hour: 12);
+  DateTime start = end.copyWith(day: 0, hour: 12);
+  String endDate = end.toIso8601String();
+  String startDate = start.toIso8601String();
+  final res = await getCollections(username, admin, startDate, endDate);
   return res;
 }
 
@@ -34,9 +47,9 @@ String getRow(Collection c) {
 
 Future<Map<String, Map<int, int>>> getOriginMap(
     bool admin, String username, String origin) async {
-  DateTime date = DateTime.now();
+  final DateTime date = DateTime.now();
   final List<Collection> coll =
-      await getCollectionList(date, admin, username, origin);
+      await getCollectionsByOrigin(date, admin, username, origin);
   final Map<String, Map<int, int>> res = {};
   for (var element in coll) {
     final String row = getRow(element);
@@ -46,6 +59,22 @@ Future<Map<String, Map<int, int>>> getOriginMap(
     }
     final int old = (res[row]![day]) ?? 0;
     res[row]![day] = old + element.quantity + element.quantity2;
+  }
+  return res;
+}
+
+Future<Map<String, Map<int, int>>> getCollectionsMap(
+    DateTime date, bool admin, String username) async {
+  List<Collection> coll = await getCollectionList(date, admin, username);
+  final Map<String, Map<int, int>> res = {};
+  for (var element in coll) {
+    final String origin = element.origin;
+    final int day = getDay(element);
+    if (!res.containsKey(origin)) {
+      res[origin] = {};
+    }
+    final int old = (res[origin]![day]) ?? 0;
+    res[origin]![day] = old + element.quantity + element.quantity2;
   }
   return res;
 }
