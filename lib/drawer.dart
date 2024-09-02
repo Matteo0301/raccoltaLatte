@@ -1,6 +1,5 @@
 import 'package:raccoltalatte/auth.dart';
 import 'package:raccoltalatte/collections/home.dart';
-import 'package:raccoltalatte/collections_table/collections_table.dart';
 import 'package:raccoltalatte/origins/origin_page.dart';
 import 'package:raccoltalatte/theme.dart';
 import 'package:flutter/material.dart';
@@ -18,7 +17,6 @@ class AppMenu extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     final Widget origins;
-    final Widget collectionsByOrigin;
     const empty = SizedBox.shrink();
 
     final children = [
@@ -63,22 +61,11 @@ class AppMenu extends StatelessWidget {
           })); */
         },
       ); */
-      collectionsByOrigin = ListTile(
-        title: const Text('Storico Raccolte'),
-        onTap: () {
-          Navigator.push(context, MaterialPageRoute(builder: (context) {
-            return CollectionsTablePage(
-                title: 'Storico Raccolte', username: username, admin: admin);
-          }));
-        },
-      );
     } else {
       origins = empty;
-      collectionsByOrigin = empty;
     }
 
     children.add(origins);
-    children.add(collectionsByOrigin);
 
     for (var child in children) {
       if (child.runtimeType == ListTile &&
