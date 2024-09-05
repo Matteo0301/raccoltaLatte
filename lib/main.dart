@@ -1,3 +1,4 @@
+import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_app_check/firebase_app_check.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:firebase_remote_config/firebase_remote_config.dart';
@@ -6,6 +7,7 @@ import 'package:raccoltalatte/collections/home.dart';
 import 'package:raccoltalatte/config.dart';
 import 'package:raccoltalatte/firebase_options.dart';
 import 'package:raccoltalatte/login.dart';
+import 'package:raccoltalatte/requests.dart';
 import 'package:raccoltalatte/theme.dart';
 import 'package:firebase_core/firebase_core.dart';
 import 'package:firebase_crashlytics/firebase_crashlytics.dart';
@@ -19,9 +21,14 @@ Future<void> main() async {
     options: DefaultFirebaseOptions.currentPlatform,
   );
 
+  db.settings = const Settings(
+    persistenceEnabled: true,
+    cacheSizeBytes: Settings.CACHE_SIZE_UNLIMITED,
+  );
+
   await remoteConfig.setConfigSettings(RemoteConfigSettings(
     fetchTimeout: const Duration(minutes: 1),
-    minimumFetchInterval: const Duration(hours: 1),
+    minimumFetchInterval: const Duration(minutes: 30),
   ));
 
   if (!kIsWeb) {
