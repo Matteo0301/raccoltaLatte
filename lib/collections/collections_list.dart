@@ -20,36 +20,39 @@ class CollectionsList extends StatelessWidget {
       itemBuilder: (context, doc) {
         final DateTime date = DateTime.parse(doc['date']);
         return ListTile(
+          visualDensity: const VisualDensity(vertical: 4),
           title: Text(
               style: const TextStyle(fontSize: 20),
               'Conferente: ${doc['origin']}'),
           subtitle: Text(
               'Quantità: ${doc['quantity']}, Seconda: ${doc['quantity2']}'),
-          trailing: Row(mainAxisSize: MainAxisSize.min, children: [
+          trailing: Column(mainAxisSize: MainAxisSize.min, children: [
             Text(
-                '${doc['user']}   (${date.day.toString().padLeft(2, '0')}/${date.month.toString().padLeft(2, '0')}/${date.year} ${date.hour}:${date.minute.toString().padLeft(2, '0')})'),
-            IconButton(
-              icon: const Icon(Icons.arrow_forward_ios),
-              onPressed: () async {
-                String? url = await getImageURL(date);
-                if (context.mounted) {
-                  showDialog(
-                      context: context,
-                      builder: (context) =>
-                          ImageDialog(context: context, url: url));
-                }
-              },
-            ),
-            IconButton(
-                onPressed: () =>
-                    removeCollection(doc['date']).catchError((error) {
-                      if (context.mounted) {
-                        ScaffoldMessenger.of(context).showSnackBar(
-                          SnackBar(content: Text(error.toString())),
-                        );
-                      }
-                    }),
-                icon: const Icon(Icons.delete))
+                '${doc['user']}\n(${date.day.toString().padLeft(2, '0')}/${date.month.toString().padLeft(2, '0')}/${date.year} ${date.hour}:${date.minute.toString().padLeft(2, '0')})'),
+            Row(mainAxisSize: MainAxisSize.min, children: [
+              IconButton(
+                icon: const Icon(Icons.arrow_forward_ios),
+                onPressed: () async {
+                  String? url = await getImageURL(date);
+                  if (context.mounted) {
+                    showDialog(
+                        context: context,
+                        builder: (context) =>
+                            ImageDialog(context: context, url: url));
+                  }
+                },
+              ),
+              IconButton(
+                  onPressed: () =>
+                      removeCollection(doc['date']).catchError((error) {
+                        if (context.mounted) {
+                          ScaffoldMessenger.of(context).showSnackBar(
+                            SnackBar(content: Text(error.toString())),
+                          );
+                        }
+                      }),
+                  icon: const Icon(Icons.delete))
+            ])
           ]),
         );
       },
