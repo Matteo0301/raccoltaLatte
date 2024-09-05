@@ -41,9 +41,7 @@ class AddButtonState extends State<AddButton> {
   Future<String?> obtainImage() async {
     final String? file;
     if (!kIsWeb && (UniversalPlatform.isAndroid || UniversalPlatform.isIOS)) {
-      file = (await _picker.pickImage(
-              source: ImageSource.camera, maxHeight: 200, maxWidth: 100))
-          ?.path;
+      file = (await _picker.pickImage(source: ImageSource.camera))?.path;
     } else {
       file = null;
     }
@@ -132,7 +130,6 @@ class AddButtonState extends State<AddButton> {
 
     // save file
     if (!kIsWeb && filePath != null) {
-      //await image.copy('$path/$imagePrefix${date.toIso8601String()}.jpg');
       Gal.putImage(filePath);
       if (saveFile) {
         uploadFile(File(filePath), date);
