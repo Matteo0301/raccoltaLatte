@@ -1,5 +1,4 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
-import 'package:firebase_app_check/firebase_app_check.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:firebase_remote_config/firebase_remote_config.dart';
 import 'package:raccoltalatte/auth.dart';
@@ -42,9 +41,6 @@ Future<void> main() async {
       saveFile = remoteConfig.getBool(saveFileKey);
       appCheck = remoteConfig.getBool(appCheckKey);
     });
-
-    // TODO AppCheck
-    //await FirebaseAppCheck.instance.activate();
 
     // Pass all uncaught "fatal" errors from the framework to Crashlytics
     FlutterError.onError = (errorDetails) {
