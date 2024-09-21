@@ -48,7 +48,7 @@ class AddButton extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-        return Button<Origin>(inputPopup: inputPopup);
+    return const Button<Origin>(inputPopup: inputPopup);
   }
 }
 
