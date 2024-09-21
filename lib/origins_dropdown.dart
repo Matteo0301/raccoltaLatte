@@ -5,10 +5,8 @@ import 'package:flutter/material.dart';
 import 'package:geolocator/geolocator.dart';
 
 class OriginsDropdown extends StatelessWidget {
-  const OriginsDropdown(this.onChanged,
-      {super.key, this.includeSelectAll = false});
-  final void Function(String, bool) onChanged;
-  final bool includeSelectAll;
+  const OriginsDropdown(this.onChanged, {super.key});
+  final void Function(String) onChanged;
   static List<Origin>? origins;
 
   Future<Position> getLocation() async {
@@ -52,7 +50,7 @@ class OriginsDropdown extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return Row(children: [
+    return Column(children: [
       const Padding(
         padding: EdgeInsets.all(MyTheme.padding),
         child: Text('Conferente: '),
@@ -64,7 +62,7 @@ class OriginsDropdown extends StatelessWidget {
             return const Center(child: Text('Nessun conferente trovato'));
           } else if (snapshot.hasData) {
             List<Origin> list = snapshot.data as List<Origin>;
-            return OriginsDropdownHelper(list, onChanged, includeSelectAll);
+            return OriginsDropdownHelper(list, onChanged);
           } else {
             return const Center(child: CircularProgressIndicator());
           }
@@ -75,12 +73,9 @@ class OriginsDropdown extends StatelessWidget {
 }
 
 class OriginsDropdownHelper extends StatefulWidget {
-  const OriginsDropdownHelper(
-      this.origins, this.onChanged, this.includeSelectAll,
-      {super.key});
+  const OriginsDropdownHelper(this.origins, this.onChanged, {super.key});
   final List<Origin> origins;
-  final void Function(String, bool) onChanged;
-  final bool includeSelectAll;
+  final void Function(String) onChanged;
 
   @override
   State<StatefulWidget> createState() => DropdownState();
@@ -92,12 +87,9 @@ class DropdownState extends State<OriginsDropdownHelper> {
   @override
   Widget build(BuildContext context) {
     if (widget.origins.isEmpty) return const Text('Nessun conferente trovato');
-    if (widget.includeSelectAll && widget.origins[0].name != 'Tutti') {
-      widget.origins.insert(0, Origin('Tutti', 0, 0, ''));
-    }
     if (selected == '') {
       selected = widget.origins[0].name;
-      widget.onChanged(selected, false);
+      widget.onChanged(selected);
     }
     return Padding(
       padding: const EdgeInsets.all(8.0),
@@ -114,7 +106,7 @@ class DropdownState extends State<OriginsDropdownHelper> {
               selected = '';
             } else {
               selected = value;
-              widget.onChanged(selected, true);
+              widget.onChanged(selected);
             }
           });
         },
