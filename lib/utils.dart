@@ -36,7 +36,8 @@ class AddDialog extends AlertDialog {
             ),
             TextButton(
               onPressed: () {
-                if (formKey.currentState!.validate()) {
+                if (formKey.currentState != null &&
+                    formKey.currentState!.validate()) {
                   formKey.currentState!.save();
                   addAction();
                 } else {

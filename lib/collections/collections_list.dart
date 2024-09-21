@@ -29,7 +29,7 @@ class CollectionsList extends StatelessWidget {
           trailing: Column(mainAxisSize: MainAxisSize.min, children: [
             Text(
                 '${doc['user']}\n(${date.day.toString().padLeft(2, '0')}/${date.month.toString().padLeft(2, '0')}/${date.year} ${date.hour}:${date.minute.toString().padLeft(2, '0')})'),
-            Row(mainAxisSize: MainAxisSize.min, children: [
+            (admin)?(Row(mainAxisSize: MainAxisSize.min, children: [
               IconButton(
                 icon: const Icon(Icons.arrow_forward_ios),
                 onPressed: () async {
@@ -52,7 +52,7 @@ class CollectionsList extends StatelessWidget {
                         }
                       }),
                   icon: const Icon(Icons.delete))
-            ])
+            ])):const SizedBox()
           ]),
         );
       },

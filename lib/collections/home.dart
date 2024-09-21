@@ -113,14 +113,16 @@ class HomePageState extends State<HomePage> {
                     });
                   },
                   icon: const Icon(Icons.arrow_forward_ios)),
-              IconButton(
-                  onPressed: () async {
-                    final map = await getCollectionsMap(
-                        date, widget.admin, widget.username);
-                    genExcel('${date.month}_${date.year}.xls', map,
-                        map.keys.toList());
-                  },
-                  icon: const Icon(Icons.download)),
+              widget.admin
+                  ? (IconButton(
+                      onPressed: () async {
+                        final map = await getCollectionsMap(
+                            date, widget.admin, widget.username);
+                        genExcel('${date.month}_${date.year}.xls', map,
+                            map.keys.toList());
+                      },
+                      icon: const Icon(Icons.download)))
+                  : const SizedBox(),
             ],
             leading: !leading
                 ? null

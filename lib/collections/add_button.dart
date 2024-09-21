@@ -116,8 +116,10 @@ class AddButtonState extends State<AddButton> {
       return;
     }
     var tmp = s.split(';');
-    final quantity = int.parse(tmp[0]);
-    final quantity2 = int.parse(tmp[1]);
+    final quantity = int.parse(
+        tmp[0].substring((tmp[0].length - 5 >= 0) ? tmp[0].length - 5 : 0));
+    final quantity2 = int.parse(
+        tmp[1].substring((tmp[1].length - 5 >= 0) ? tmp[1].length - 5 : 0));
 
     if (recognized != '') {
       int recognizedInt = int.parse(recognized);
