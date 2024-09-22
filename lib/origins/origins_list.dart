@@ -1,5 +1,6 @@
 import 'package:firebase_ui_firestore/firebase_ui_firestore.dart';
 import 'package:raccoltalatte/gen_excel.dart';
+import 'package:raccoltalatte/origins/origin.dart';
 import 'package:raccoltalatte/requests.dart';
 import 'package:flutter/material.dart';
 import 'package:raccoltalatte/origins/add_button.dart';
@@ -34,8 +35,11 @@ class OriginsList extends StatelessWidget {
               icon: const Icon(Icons.delete)),
           IconButton(
               onPressed: () async {
-                String name = doc['name'];
-                await AddButton.inputPopup(context, name);
+                final String name = doc['name'];
+                final String address =
+                    (doc.data().containsKey('address')) ? doc['address'] : '';
+                await AddButton.inputPopup(
+                    context, Origin(name, 0, 0, address, ''));
               },
               icon: const Icon(Icons.create))
         ]),

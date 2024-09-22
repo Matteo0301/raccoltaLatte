@@ -63,7 +63,7 @@ class AddButtonState extends State<AddButton> {
     return null;
   }
 
-  Future<void> inputPopup(BuildContext context, String? _) async {
+  Future<void> inputPopup(BuildContext context, Collection? _) async {
     date = DateTime.now();
     String? filePath = await obtainImage();
     final String recognized;

@@ -145,7 +145,7 @@ class AdminCheckboxState extends State<AdminCheckbox> {
 }
 
 class Button<T> extends StatelessWidget {
-  final Future<void> Function(BuildContext context, String? initial) inputPopup;
+  final Future<void> Function(BuildContext context, T? initial) inputPopup;
 
   const Button({super.key, required this.inputPopup});
 

@@ -6,8 +6,9 @@ class Origin {
   final double lat;
   final double lng;
   final String id;
+  final String address;
 
-  Origin(this.name, this.lat, this.lng, this.id);
+  Origin(this.name, this.lat, this.lng, this.address, this.id);
 
   @override
   String toString() {
@@ -18,11 +19,12 @@ class Origin {
     return '{"name": "$name", "lat": $lat, "lng": $lng}';
   } */
 
-  Map<String, dynamic> toJson() => {'name': name, 'lat': lat, 'lng': lng};
+  Map<String, dynamic> toJson() =>
+      {'name': name, 'lat': lat, 'lng': lng, 'address': address};
 
   factory Origin.fromJson(Map<String, dynamic> json, String id) {
-    return Origin(
-        parseFragment(json['name']).text!, json['lat'], json['lng'], id);
+    return Origin(parseFragment(json['name']).text!, json['lat'], json['lng'],
+        json['address'] ?? '', id);
   }
 
   distance(location) {
