@@ -30,7 +30,9 @@ class OriginsDropdown extends StatelessWidget {
       return Future.error('Fornire i permessi per la geolocalizzazione');
     }
 
-    return await Geolocator.getCurrentPosition();
+    return await Geolocator.getCurrentPosition(
+        locationSettings:
+            const LocationSettings(accuracy: LocationAccuracy.best));
   }
 
   getSortedOrigins() async {
