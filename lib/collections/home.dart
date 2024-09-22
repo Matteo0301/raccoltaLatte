@@ -2,7 +2,7 @@ import 'package:raccoltalatte/collections/add_button.dart';
 import 'package:raccoltalatte/collections/collections_list.dart';
 import 'package:raccoltalatte/drawer.dart';
 import 'package:flutter/material.dart';
-import 'package:raccoltalatte/origins/gen_excel.dart';
+import 'package:raccoltalatte/gen_excel.dart';
 
 class Home extends StatelessWidget {
   const Home(

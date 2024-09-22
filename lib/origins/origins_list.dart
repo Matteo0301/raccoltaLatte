@@ -1,5 +1,5 @@
 import 'package:firebase_ui_firestore/firebase_ui_firestore.dart';
-import 'package:raccoltalatte/origins/gen_excel.dart';
+import 'package:raccoltalatte/gen_excel.dart';
 import 'package:raccoltalatte/requests.dart';
 import 'package:flutter/material.dart';
 import 'package:raccoltalatte/origins/add_button.dart';
