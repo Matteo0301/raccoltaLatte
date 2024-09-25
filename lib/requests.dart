@@ -6,6 +6,7 @@ import 'package:firebase_storage/firebase_storage.dart';
 import 'package:raccoltalatte/collections/collection.dart';
 import 'package:raccoltalatte/origins/origin.dart';
 import 'package:raccoltalatte/secrets.dart';
+import 'package:raccoltalatte/utils.dart';
 import 'package:tuple/tuple.dart';
 import 'package:http/http.dart' as http;
 
@@ -72,10 +73,14 @@ Future<void> addCollection(Collection collection) async {
   await db.collection('collections').add(collection.toJson());
 }
 
-Future<void> uploadFile(File file, DateTime date) async {
-  await storage
-      .ref(storagePath + imagePrefix + date.toIso8601String())
-      .putFile(file);
+Future<void> uploadFile(File file, String remoteName) async {
+  await storage.ref(remoteName).putFile(file);
+}
+
+void queueFile(File file, DateTime date) {
+  FileList.sent = false;
+  FileList.filenames
+      .add(Tuple2(file, storagePath + imagePrefix + date.toIso8601String()));
 }
 
 Future<String?> getImageURL(DateTime date) async {

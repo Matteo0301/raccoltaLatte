@@ -1,6 +1,8 @@
+import 'dart:io';
 import 'dart:math';
 
 import 'package:flutter/material.dart';
+import 'package:tuple/tuple.dart';
 
 class AddDialog extends AlertDialog {
   final GlobalKey<FormState> formKey;
@@ -175,4 +177,9 @@ class ConfirmDialog extends AlertDialog {
             child: const Text('Conferma'),
           ),
         ]);
+}
+
+class FileList {
+  static final List<Tuple2<File, String>> filenames = [];
+  static bool sent = false;
 }

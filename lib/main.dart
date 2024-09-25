@@ -1,4 +1,7 @@
+import 'dart:async';
+
 import 'package:cloud_firestore/cloud_firestore.dart';
+import 'package:connectivity_plus/connectivity_plus.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:firebase_remote_config/firebase_remote_config.dart';
 import 'package:raccoltalatte/auth.dart';
@@ -13,6 +16,7 @@ import 'package:firebase_crashlytics/firebase_crashlytics.dart';
 import 'package:flutter/foundation.dart';
 import 'package:flutter/gestures.dart';
 import 'package:flutter/material.dart';
+import 'package:raccoltalatte/utils.dart';
 
 Future<void> main() async {
   WidgetsFlutterBinding.ensureInitialized();
@@ -52,6 +56,20 @@ Future<void> main() async {
       FirebaseCrashlytics.instance.recordError(error, stack, fatal: true);
       return true;
     };
+  }
+
+  if (!kIsWeb) {
+    StreamSubscription<List<ConnectivityResult>> subscription = Connectivity()
+        .onConnectivityChanged
+        .listen((List<ConnectivityResult> result) {
+      if (result.contains(ConnectivityResult.wifi) && !FileList.sent) {
+        FileList.sent = true;
+        for (var elem in FileList.filenames) {
+          uploadFile(elem.item1, elem.item2);
+        }
+        FileList.filenames.clear();
+      }
+    });
   }
 
   runApp(const MyApp());
