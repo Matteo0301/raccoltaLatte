@@ -7,3 +7,6 @@ const saveFileKey = 'save_file';
 
 bool uploadOnWifi = true;
 const uploadOnWifiKey = 'upload_on_wifi';
+
+bool limitUsers = false;
+const limitUsersKey = 'limit_users';

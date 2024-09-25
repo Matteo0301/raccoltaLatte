@@ -1,4 +1,5 @@
 import 'package:firebase_ui_firestore/firebase_ui_firestore.dart';
+import 'package:raccoltalatte/config.dart';
 import 'package:raccoltalatte/requests.dart';
 import 'package:raccoltalatte/utils.dart';
 import 'package:flutter/material.dart';
@@ -29,30 +30,32 @@ class CollectionsList extends StatelessWidget {
           trailing: Column(mainAxisSize: MainAxisSize.min, children: [
             Text(
                 '${doc['user']}\n(${date.day.toString().padLeft(2, '0')}/${date.month.toString().padLeft(2, '0')}/${date.year} ${date.hour}:${date.minute.toString().padLeft(2, '0')})'),
-            (admin)?(Row(mainAxisSize: MainAxisSize.min, children: [
-              IconButton(
-                icon: const Icon(Icons.arrow_forward_ios),
-                onPressed: () async {
-                  String? url = await getImageURL(date);
-                  if (context.mounted) {
-                    showDialog(
-                        context: context,
-                        builder: (context) =>
-                            ImageDialog(context: context, url: url));
-                  }
-                },
-              ),
-              IconButton(
-                  onPressed: () =>
-                      removeCollection(doc['date']).catchError((error) {
+            (admin || !limitUsers)
+                ? (Row(mainAxisSize: MainAxisSize.min, children: [
+                    IconButton(
+                      icon: const Icon(Icons.arrow_forward_ios),
+                      onPressed: () async {
+                        String? url = await getImageURL(date);
                         if (context.mounted) {
-                          ScaffoldMessenger.of(context).showSnackBar(
-                            SnackBar(content: Text(error.toString())),
-                          );
+                          showDialog(
+                              context: context,
+                              builder: (context) =>
+                                  ImageDialog(context: context, url: url));
                         }
-                      }),
-                  icon: const Icon(Icons.delete))
-            ])):const SizedBox()
+                      },
+                    ),
+                    IconButton(
+                        onPressed: () =>
+                            removeCollection(doc['date']).catchError((error) {
+                              if (context.mounted) {
+                                ScaffoldMessenger.of(context).showSnackBar(
+                                  SnackBar(content: Text(error.toString())),
+                                );
+                              }
+                            }),
+                        icon: const Icon(Icons.delete))
+                  ]))
+                : const SizedBox()
           ]),
         );
       },
