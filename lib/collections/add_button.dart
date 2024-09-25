@@ -140,7 +140,7 @@ class AddButtonState extends State<AddButton> {
 
     final Collection c =
         Collection(widget.username, origin, quantity, quantity2, date, '');
-    await addCollection(c, filePath).catchError((error) {
+    await addCollection(c).catchError((error) {
       if (context.mounted) {
         ScaffoldMessenger.of(context).showSnackBar(
           SnackBar(content: Text(error.toString())),

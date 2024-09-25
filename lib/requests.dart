@@ -68,7 +68,7 @@ Future<List<Collection>> getCollections(
       .toList();
 }
 
-Future<void> addCollection(Collection collection, String? filename) async {
+Future<void> addCollection(Collection collection) async {
   await db.collection('collections').add(collection.toJson());
 }
 
