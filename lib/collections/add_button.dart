@@ -134,7 +134,11 @@ class AddButtonState extends State<AddButton> {
     if (!kIsWeb && filePath != null) {
       Gal.putImage(filePath);
       if (saveFile) {
-        queueFile(File(filePath), date);
+        if (uploadOnWifi) {
+          queueFile(File(filePath), date);
+        } else {
+          uploadFile(File(filePath), remoteName(date));
+        }
       }
     }
 

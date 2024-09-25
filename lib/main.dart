@@ -43,7 +43,7 @@ Future<void> main() async {
       await remoteConfig.activate();
 
       saveFile = remoteConfig.getBool(saveFileKey);
-      appCheck = remoteConfig.getBool(appCheckKey);
+      uploadOnWifi = remoteConfig.getBool(uploadOnWifiKey);
     });
 
     // Pass all uncaught "fatal" errors from the framework to Crashlytics

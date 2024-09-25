@@ -79,8 +79,11 @@ Future<void> uploadFile(File file, String remoteName) async {
 
 void queueFile(File file, DateTime date) {
   FileList.sent = false;
-  FileList.filenames
-      .add(Tuple2(file, storagePath + imagePrefix + date.toIso8601String()));
+  FileList.filenames.add(Tuple2(file, remoteName(date)));
+}
+
+String remoteName(DateTime date) {
+  return storagePath + imagePrefix + date.toIso8601String();
 }
 
 Future<String?> getImageURL(DateTime date) async {

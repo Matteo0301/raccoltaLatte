@@ -5,5 +5,5 @@ final remoteConfig = FirebaseRemoteConfig.instance;
 bool saveFile = true;
 const saveFileKey = 'save_file';
 
-bool appCheck = false;
-const appCheckKey = 'app_check';
+bool uploadOnWifi = true;
+const uploadOnWifiKey = 'upload_on_wifi';
