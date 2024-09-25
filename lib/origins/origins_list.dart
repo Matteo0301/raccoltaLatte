@@ -1,4 +1,5 @@
 import 'package:firebase_ui_firestore/firebase_ui_firestore.dart';
+import 'package:raccoltalatte/config.dart';
 import 'package:raccoltalatte/gen_excel.dart';
 import 'package:raccoltalatte/origins/origin.dart';
 import 'package:raccoltalatte/requests.dart';
@@ -28,7 +29,7 @@ class OriginsList extends StatelessWidget {
           ),
           IconButton(
               onPressed: () => removeOrigin(doc['name']).catchError((error) {
-                    ScaffoldMessenger.of(context).showSnackBar(
+                    snackbarKey.currentState?.showSnackBar(
                       SnackBar(content: Text(error.toString())),
                     );
                   }),

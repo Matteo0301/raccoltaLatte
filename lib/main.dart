@@ -62,7 +62,7 @@ Future<void> main() async {
   }
 
   if (!kIsWeb) {
-    StreamSubscription<List<ConnectivityResult>> subscription = Connectivity()
+    StreamSubscription<List<ConnectivityResult>> _ = Connectivity()
         .onConnectivityChanged
         .listen((List<ConnectivityResult> result) {
       if (result.contains(ConnectivityResult.wifi) && !FileList.sent) {
@@ -86,6 +86,7 @@ class MyApp extends StatelessWidget {
     return MaterialApp(
       scrollBehavior: MyCustomScrollBehavior(),
       debugShowCheckedModeBanner: false,
+      scaffoldMessengerKey: snackbarKey,
       title: 'Raccolta latte',
       theme: MyTheme().theme,
       home: StreamBuilder(

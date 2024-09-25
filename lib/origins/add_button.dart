@@ -1,3 +1,4 @@
+import 'package:raccoltalatte/config.dart';
 import 'package:raccoltalatte/origins/origin.dart';
 import 'package:raccoltalatte/requests.dart';
 import 'package:raccoltalatte/utils.dart';
@@ -18,7 +19,7 @@ class AddButton extends StatelessWidget {
       return;
     }
     final coordinates = await address2Coordinates(tmp[1]).catchError((error) {
-      ScaffoldMessenger.of(context).showSnackBar(
+      snackbarKey.currentState?.showSnackBar(
         SnackBar(content: Text(error.toString())),
       );
       return const Tuple2(0.0, 0.0);
@@ -32,13 +33,13 @@ class AddButton extends StatelessWidget {
     final o = Origin(tmp[0], coordinates.item1, coordinates.item2, tmp[1], '');
     if (initial == null) {
       await addOrigin(o).catchError((error) {
-        ScaffoldMessenger.of(context).showSnackBar(
+        snackbarKey.currentState?.showSnackBar(
           SnackBar(content: Text(error.toString())),
         );
       });
     } else {
       await updateOrigin(initial.name, o).onError(
-        (error, stackTrace) => ScaffoldMessenger.of(context).showSnackBar(
+        (error, stackTrace) => snackbarKey.currentState?.showSnackBar(
           SnackBar(content: Text(error.toString())),
         ),
       );
