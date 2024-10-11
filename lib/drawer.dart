@@ -1,5 +1,6 @@
 import 'package:raccoltalatte/auth.dart';
 import 'package:raccoltalatte/collections/home.dart';
+import 'package:raccoltalatte/employees/employee_page.dart';
 import 'package:raccoltalatte/origins/origin_page.dart';
 import 'package:raccoltalatte/theme.dart';
 import 'package:flutter/material.dart';
@@ -17,6 +18,7 @@ class AppMenu extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     final Widget origins;
+    final Widget employees;
     const empty = SizedBox.shrink();
 
     final children = [
@@ -53,19 +55,22 @@ class AppMenu extends StatelessWidget {
           }));
         },
       );
-      /* users = ListTile(
-        title: const Text('Utenti'),
+      employees = ListTile(
+        title: const Text('Operai'),
         onTap: () {
-          /* Navigator.push(context, MaterialPageRoute(builder: (context) {
-            return UsersPage(title: 'Utenti', username: username, admin: admin);
-          })); */
+          Navigator.push(context, MaterialPageRoute(builder: (context) {
+            return EmployeePage(
+                title: 'Operai', username: username, admin: admin);
+          }));
         },
-      ); */
+      );
     } else {
       origins = empty;
+      employees = empty;
     }
 
     children.add(origins);
+    children.add(employees);
 
     for (var child in children) {
       if (child.runtimeType == ListTile &&

@@ -4,6 +4,7 @@ import 'dart:io';
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_storage/firebase_storage.dart';
 import 'package:raccoltalatte/collections/collection.dart';
+import 'package:raccoltalatte/employees/employee.dart';
 import 'package:raccoltalatte/origins/origin.dart';
 import 'package:raccoltalatte/secrets.dart';
 import 'package:raccoltalatte/utils.dart';
@@ -14,10 +15,13 @@ final db = FirebaseFirestore.instance;
 final storage = FirebaseStorage.instance;
 const String imagePrefix = 'image_';
 const String storagePath = 'images/';
+const String employeesTable = 'employees';
+const String originsTable = 'origins';
+const String collectionsTable = 'collections';
 
 Future<List<Origin>> getOrigins() async {
   try {
-    final list = (await db.collection('origins').get())
+    final list = (await db.collection(originsTable).get())
         .docs
         .map((e) => Origin.fromJson(e.data(), e.id))
         .toList();
@@ -29,30 +33,52 @@ Future<List<Origin>> getOrigins() async {
 
 Future<void> removeOrigin(String name) async {
   String id =
-      (await db.collection('origins').where('name', isEqualTo: name).get())
+      (await db.collection(originsTable).where('name', isEqualTo: name).get())
           .docs
           .first
           .id;
-  db.collection('origins').doc(id).delete();
+  db.collection(originsTable).doc(id).delete();
 }
 
 Future<void> updateOrigin(String name, Origin origin) async {
   String id =
-      (await db.collection('origins').where('name', isEqualTo: name).get())
+      (await db.collection(originsTable).where('name', isEqualTo: name).get())
           .docs
           .first
           .id;
-  db.collection('origins').doc(id).set(origin.toJson());
+  db.collection(originsTable).doc(id).set(origin.toJson());
 }
 
 Future<void> addOrigin(Origin origin) async {
-  await db.collection('origins').add(origin.toJson());
+  await db.collection(originsTable).add(origin.toJson());
+}
+
+Future<void> removeEmployee(String name) async {
+  String id =
+      (await db.collection(employeesTable).where('name', isEqualTo: name).get())
+          .docs
+          .first
+          .id;
+  db.collection(employeesTable).doc(id).delete();
+}
+
+Future<void> updateEmployee(String name, Employee employee) async {
+  String id =
+      (await db.collection(employeesTable).where('name', isEqualTo: name).get())
+          .docs
+          .first
+          .id;
+  db.collection(employeesTable).doc(id).set(employee.toJson());
+}
+
+Future<void> addEmployee(Employee employee) async {
+  await db.collection(employeesTable).add(employee.toJson());
 }
 
 getCollectionsQuery(
     String username, bool admin, String startDate, String endDate) {
   final baseQuery = db
-      .collection('collections')
+      .collection(collectionsTable)
       .where('date', isGreaterThan: startDate)
       .where('date', isLessThan: endDate);
   final finalQuery =
@@ -70,7 +96,7 @@ Future<List<Collection>> getCollections(
 }
 
 Future<void> addCollection(Collection collection) async {
-  await db.collection('collections').add(collection.toJson());
+  await db.collection(collectionsTable).add(collection.toJson());
 }
 
 Future<void> uploadFile(File file, String remoteName) async {
@@ -98,12 +124,14 @@ Future<String?> getImageURL(DateTime date) async {
 }
 
 Future<void> removeCollection(String date) async {
-  String id =
-      (await db.collection('collections').where('date', isEqualTo: date).get())
-          .docs
-          .first
-          .id;
-  db.collection('collections').doc(id).delete();
+  String id = (await db
+          .collection(collectionsTable)
+          .where('date', isEqualTo: date)
+          .get())
+      .docs
+      .first
+      .id;
+  db.collection(collectionsTable).doc(id).delete();
 }
 
 Future<Tuple2<double, double>> address2Coordinates(String address) async {
