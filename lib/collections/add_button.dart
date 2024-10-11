@@ -122,10 +122,9 @@ class AddButtonState extends State<AddButton> {
         tmp[1].substring((tmp[1].length - 5 >= 0) ? tmp[1].length - 5 : 0));
 
     if (recognized != '') {
-      int recognizedInt = int.parse(recognized);
       FirebaseAnalytics.instance.logEvent(name: 'ocr', parameters: {
-        'equals': (recognizedInt == quantity),
-        'recognized': recognizedInt,
+        'equals': (recognized == quantity.toString()),
+        'recognized': recognized,
         'real': quantity
       });
     }

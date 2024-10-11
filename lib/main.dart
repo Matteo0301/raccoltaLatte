@@ -64,11 +64,15 @@ Future<void> main() async {
   if (!kIsWeb) {
     StreamSubscription<List<ConnectivityResult>> _ = Connectivity()
         .onConnectivityChanged
-        .listen((List<ConnectivityResult> result) {
+        .listen((List<ConnectivityResult> result) async {
       if (result.contains(ConnectivityResult.wifi) && !FileList.sent) {
         FileList.sent = true;
         for (var elem in FileList.filenames) {
-          uploadFile(elem.item1, elem.item2);
+          try {
+            await uploadFile(elem.item1, elem.item2);
+          } catch (e) {
+            FirebaseCrashlytics.instance.log(e.toString());
+          }
         }
         FileList.filenames.clear();
       }
