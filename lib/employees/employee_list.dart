@@ -2,7 +2,6 @@ import 'package:firebase_ui_firestore/firebase_ui_firestore.dart';
 import 'package:raccoltalatte/config.dart';
 import 'package:raccoltalatte/employees/add_button.dart';
 import 'package:raccoltalatte/employees/employee.dart';
-import 'package:raccoltalatte/gen_excel.dart';
 import 'package:raccoltalatte/requests.dart';
 import 'package:flutter/material.dart';
 

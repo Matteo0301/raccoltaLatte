@@ -7,9 +7,10 @@ class Collection {
   final DateTime date;
   final int quantity2;
   final String id;
+  final String employee;
 
   Collection(this.user, this.origin, this.quantity, this.quantity2, this.date,
-      this.id);
+      this.employee, this.id);
 
   @override
   String toString() {
@@ -23,6 +24,7 @@ class Collection {
         json['quantity'],
         json['quantity2'],
         DateTime.parse(json['date']),
+        json['employee'] ?? '',
         id);
   }
 
@@ -31,6 +33,7 @@ class Collection {
         'origin': origin,
         'quantity': quantity,
         'quantity2': quantity2,
+        'employee': employee,
         'date': date.toIso8601String()
       };
 }

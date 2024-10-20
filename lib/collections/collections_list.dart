@@ -5,10 +5,17 @@ import 'package:raccoltalatte/utils.dart';
 import 'package:flutter/material.dart';
 
 class CollectionsList extends StatelessWidget {
-  const CollectionsList(this.username, this.admin, this.date, {super.key});
+  const CollectionsList({
+    super.key,
+    required this.username,
+    required this.admin,
+    required this.date,
+    required this.employee,
+  });
   final String username;
   final bool admin;
   final DateTime date;
+  final String employee;
 
   @override
   Widget build(BuildContext context) {

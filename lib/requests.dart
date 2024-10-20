@@ -75,6 +75,18 @@ Future<void> addEmployee(Employee employee) async {
   await db.collection(employeesTable).add(employee.toJson());
 }
 
+Future<List<Employee>> getEmployees() async {
+  try {
+    final list = (await db.collection(employeesTable).get())
+        .docs
+        .map((e) => Employee.fromJson(e.data(), e.id))
+        .toList();
+    return list;
+  } catch (e) {
+    return Future.error('Impossibile effettuare l\'operazione');
+  }
+}
+
 getCollectionsQuery(
     String username, bool admin, String startDate, String endDate) {
   final baseQuery = db

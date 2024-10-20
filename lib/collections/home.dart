@@ -2,6 +2,7 @@ import 'package:raccoltalatte/collections/add_button.dart';
 import 'package:raccoltalatte/collections/collections_list.dart';
 import 'package:raccoltalatte/drawer.dart';
 import 'package:flutter/material.dart';
+import 'package:raccoltalatte/employees_dropdown.dart';
 import 'package:raccoltalatte/gen_excel.dart';
 
 class Home extends StatelessWidget {
@@ -40,6 +41,7 @@ class HomePage extends StatefulWidget {
 
 class HomePageState extends State<HomePage> {
   late DateTime date;
+  String employee = '';
 
   @override
   void initState() {
@@ -70,13 +72,53 @@ class HomePageState extends State<HomePage> {
           ),
           Expanded(
               flex: 3,
-              child: CollectionsList(widget.username, widget.admin, date)),
+              child: Column(children: [
+                EmployeesDropdown((name) {
+                  /* if (employee == '') {
+                    employee = name;
+                  } else {
+                    setState(() {
+                      employee = name;
+                    });
+                  } */
+                  setState(() {
+                    employee = name;
+                  });
+                }),
+                Expanded(
+                    child: CollectionsList(
+                  username: widget.username,
+                  admin: widget.admin,
+                  date: date,
+                  employee: employee,
+                ))
+              ])),
         ],
       );
       drawer = null;
       leading = false;
     } else {
-      content = CollectionsList(widget.username, widget.admin, date);
+      content = Column(children: [
+        EmployeesDropdown((name) {
+          /* if (employee == '') {
+            employee = name;
+          } else {
+            setState(() {
+              employee = name;
+            });
+          } */
+          setState(() {
+            employee = name;
+          });
+        }),
+        Expanded(
+            child: CollectionsList(
+          username: widget.username,
+          admin: widget.admin,
+          date: date,
+          employee: employee,
+        ))
+      ]);
       drawer = Drawer(
           child: AppMenu(
         username: widget.username,
@@ -137,8 +179,11 @@ class HomePageState extends State<HomePage> {
                     );
                   })),
         body: content,
-        floatingActionButton:
-            AddButton(username: widget.username, admin: widget.admin),
+        floatingActionButton: AddButton(
+          username: widget.username,
+          admin: widget.admin,
+          employee: employee,
+        ),
         drawer: drawer);
   }
 }

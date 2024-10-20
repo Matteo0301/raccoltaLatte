@@ -16,9 +16,14 @@ import 'package:image_picker/image_picker.dart';
 import 'package:universal_platform/universal_platform.dart';
 
 class AddButton extends StatefulWidget {
-  const AddButton({super.key, required this.username, required this.admin});
+  const AddButton(
+      {super.key,
+      required this.username,
+      required this.admin,
+      required this.employee});
   final String username;
   final bool admin;
+  final String employee;
 
   @override
   State<StatefulWidget> createState() => AddButtonState();
@@ -141,8 +146,8 @@ class AddButtonState extends State<AddButton> {
       }
     }
 
-    final Collection c =
-        Collection(widget.username, origin, quantity, quantity2, date, '');
+    final Collection c = Collection(widget.username, origin, quantity,
+        quantity2, date, widget.employee, '');
     await addCollection(c).catchError((error) {
       if (context.mounted) {
         ScaffoldMessenger.of(context).showSnackBar(

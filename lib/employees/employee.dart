@@ -6,7 +6,7 @@ class Employee {
 
   @override
   String toString() {
-    return 'Origin{name: $name}';
+    return 'Employee{name: $name}';
   }
 
   Map<String, dynamic> toJson() => {'name': name};
