@@ -3,6 +3,7 @@ import 'package:raccoltalatte/auth.dart';
 import 'package:raccoltalatte/collections/home.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
+import 'package:raccoltalatte/utils.dart';
 
 class Login extends StatefulWidget {
   const Login({super.key, required this.title});
@@ -80,33 +81,29 @@ class LoginState extends State<Login> {
                             );
                           }
                         } on FirebaseAuthException catch (e) {
-                          if (context.mounted) {
-                            String errorMessage =
-                                "Impossibile effettuare il login";
-                            switch (e.code) {
-                              case "invalid-email":
-                                errorMessage = "Email non valida";
-                                break;
-                              case "user-disabled":
-                                errorMessage = "Utente disabilitato";
-                                break;
-                              case "user-not-found":
-                                errorMessage = "Utente non trovato";
-                                break;
-                              case "wrong-password":
-                                errorMessage = "Password errata";
-                                break;
-                              case "too-many-requests":
-                                errorMessage = "Troppi login";
-                                break;
-                              case "network-request-failed":
-                                errorMessage = "Impossibile connettersi";
-                                break;
-                            }
-                            ScaffoldMessenger.of(context).showSnackBar(
-                              SnackBar(content: Text(errorMessage)),
-                            );
+                          String errorMessage =
+                              "Impossibile effettuare il login";
+                          switch (e.code) {
+                            case "invalid-email":
+                              errorMessage = "Email non valida";
+                              break;
+                            case "user-disabled":
+                              errorMessage = "Utente disabilitato";
+                              break;
+                            case "user-not-found":
+                              errorMessage = "Utente non trovato";
+                              break;
+                            case "wrong-password":
+                              errorMessage = "Password errata";
+                              break;
+                            case "too-many-requests":
+                              errorMessage = "Troppi login";
+                              break;
+                            case "network-request-failed":
+                              errorMessage = "Impossibile connettersi";
+                              break;
                           }
+                          logAndShow(errorMessage);
                         }
                       },
                       child: const Padding(

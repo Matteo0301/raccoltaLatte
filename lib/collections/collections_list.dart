@@ -54,11 +54,7 @@ class CollectionsList extends StatelessWidget {
                     IconButton(
                         onPressed: () =>
                             removeCollection(doc['date']).catchError((error) {
-                              if (context.mounted) {
-                                ScaffoldMessenger.of(context).showSnackBar(
-                                  SnackBar(content: Text(error.toString())),
-                                );
-                              }
+                              logAndShow(error);
                             }),
                         icon: const Icon(Icons.delete))
                   ]))

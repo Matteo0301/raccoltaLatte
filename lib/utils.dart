@@ -1,5 +1,7 @@
 import 'dart:io';
+import 'package:firebase_analytics/firebase_analytics.dart';
 import 'package:flutter/material.dart';
+import 'package:raccoltalatte/config.dart';
 import 'package:tuple/tuple.dart';
 
 class AddDialog extends AlertDialog {
@@ -180,4 +182,16 @@ class ConfirmDialog extends AlertDialog {
 class FileList {
   static final List<Tuple2<File, String>> filenames = [];
   static bool sent = false;
+}
+
+void logAndShow(String s) async {
+  await FirebaseAnalytics.instance.logEvent(
+    name: "error",
+    parameters: {
+      "content": s,
+    },
+  );
+  snackbarKey.currentState?.showSnackBar(
+    SnackBar(content: Text(s)),
+  );
 }

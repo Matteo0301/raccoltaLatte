@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:raccoltalatte/config.dart';
 import 'package:raccoltalatte/employees/employee.dart';
 import 'package:raccoltalatte/requests.dart';
 import 'package:raccoltalatte/theme.dart';
@@ -10,6 +11,9 @@ class EmployeesDropdown extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    if (!askEmployee) {
+      return const SizedBox.shrink();
+    }
     return Row(children: [
       const Padding(
         padding: EdgeInsets.all(MyTheme.padding),

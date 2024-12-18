@@ -39,6 +39,7 @@ Future<void> main() async {
       saveFileKey: true,
       uploadOnWifiKey: true,
       limitUsersKey: false,
+      askEmployeeKey: false,
     });
 
     remoteConfig.onConfigUpdated.listen((event) async {
@@ -47,6 +48,7 @@ Future<void> main() async {
       saveFile = remoteConfig.getBool(saveFileKey);
       uploadOnWifi = remoteConfig.getBool(uploadOnWifiKey);
       limitUsers = remoteConfig.getBool(limitUsersKey);
+      askEmployee = remoteConfig.getBool(askEmployeeKey);
     });
 
     // Pass all uncaught "fatal" errors from the framework to Crashlytics

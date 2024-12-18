@@ -14,3 +14,6 @@ const uploadOnWifiKey = 'upload_on_wifi';
 
 bool limitUsers = false;
 const limitUsersKey = 'limit_users';
+
+bool askEmployee = false;
+const askEmployeeKey = 'ask_employee';
