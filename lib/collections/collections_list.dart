@@ -54,7 +54,7 @@ class CollectionsList extends StatelessWidget {
                     IconButton(
                         onPressed: () =>
                             removeCollection(doc['date']).catchError((error) {
-                              logAndShow(error);
+                              logAndShow(error.toString());
                             }),
                         icon: const Icon(Icons.delete))
                   ]))

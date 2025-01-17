@@ -6,6 +6,19 @@ import 'package:path_provider/path_provider.dart';
 import 'package:raccoltalatte/collections/collection.dart';
 import 'package:raccoltalatte/requests.dart';
 
+List<List<CellValue>> transpose(List<List<CellValue>> l) {
+  List<List<CellValue>> res = [];
+  for (int i = 0; i < l[0].length; i++) {
+    res.add([]);
+  }
+  for (int i = 0; i < l.length; i++) {
+    for (int j = 0; j < l[i].length; j++) {
+      res[j].add(l[i][j]);
+    }
+  }
+  return res;
+}
+
 Future<List<Collection>> getCollectionsByOrigin(
     DateTime date, bool admin, String username, String origin) async {
   DateTime end = date.copyWith(month: date.month + 1, day: 0, hour: 12);
@@ -46,8 +59,7 @@ String getRow(Collection c) {
 }
 
 Future<Map<String, Map<int, int>>> getOriginMap(
-    bool admin, String username, String origin) async {
-  final DateTime date = DateTime.now();
+    bool admin, String username, String origin, DateTime date) async {
   final List<Collection> coll =
       await getCollectionsByOrigin(date, admin, username, origin);
   final Map<String, Map<int, int>> res = {};
@@ -83,12 +95,13 @@ void fillExcel(Excel excel, DateTime date, List<String> k,
     Map<String, Map<int, int>> map) {
   final DateTime end = date.copyWith(month: date.month + 1, day: 0, hour: 12);
   List<CellValue> header = [TextCellValue('')];
+  List<List<CellValue>> tmp = [];
 
   for (int i = 1; i <= end.day; i++) {
     header.add(TextCellValue('$i'));
   }
   header.add(TextCellValue('Totale'));
-  excel['Sheet1'].appendRow(header);
+  tmp.add(header);
   for (var key in k) {
     final List<CellValue> row = [TextCellValue(key)];
     int total = 0;
@@ -98,8 +111,12 @@ void fillExcel(Excel excel, DateTime date, List<String> k,
       total += quantity;
     }
     row.add(IntCellValue(total));
-    excel['Sheet1'].appendRow(row);
+    tmp.add(row);
   }
+  var t = transpose(tmp);
+  t.forEach(
+    (element) => excel['Sheet1'].appendRow(element),
+  );
 }
 
 void genExcel(
