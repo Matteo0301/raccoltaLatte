@@ -112,12 +112,13 @@ Future<void> addCollection(Collection collection) async {
 }
 
 Future<void> uploadFile(File file, String remoteName) async {
+  print(remoteName);
   await storage.ref(remoteName).putFile(file);
 }
 
-void queueFile(File file, DateTime date) {
+void queueFile(File file, String date) {
   FileList.sent = false;
-  FileList.filenames.add(Tuple2(file, remoteName(date)));
+  FileList.filenames.add(Tuple2(file, date));
 }
 
 String remoteName(DateTime date) {
@@ -125,10 +126,11 @@ String remoteName(DateTime date) {
 }
 
 Future<String?> getImageURL(DateTime date) async {
+  print(imagePrefix + date.toIso8601String());
   try {
     return (await storage
         .ref(storagePath)
-        .child('$imagePrefix${date.toIso8601String()}')
+        .child(imagePrefix + date.toIso8601String())
         .getDownloadURL());
   } catch (_) {
     return null;

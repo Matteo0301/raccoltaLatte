@@ -139,7 +139,7 @@ class AddButtonState extends State<AddButton> {
       Gal.putImage(filePath);
       if (saveFile) {
         if (uploadOnWifi) {
-          queueFile(File(filePath), date);
+          queueFile(File(filePath), remoteName(date));
         } else {
           uploadFile(File(filePath), remoteName(date));
         }
