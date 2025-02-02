@@ -115,7 +115,7 @@ class HomePageState extends State<HomePage> {
     return Scaffold(
         appBar: AppBar(
             title: Text(
-                '${date.month.toString().padLeft(2, "0")}/${date.month.toString().padLeft(2, "0")}/${date.year}'),
+                '${date.day.toString().padLeft(2, "0")}/${date.month.toString().padLeft(2, "0")}/${date.year}'),
             centerTitle: true,
             automaticallyImplyLeading: false,
             actions: [
