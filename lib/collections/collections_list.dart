@@ -19,8 +19,15 @@ class CollectionsList extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    DateTime end = date.copyWith(month: date.month + 1, day: 0, hour: 12);
-    DateTime start = end.copyWith(day: 0, hour: 12);
+    final DateTime end;
+    final DateTime start;
+    if (date.hour > 12) {
+      end = date.copyWith(day: date.day + 1, hour: 12);
+      start = date.copyWith(hour: 12);
+    } else {
+      start = date.copyWith(day: date.day - 1, hour: 12);
+      end = date.copyWith(hour: 12);
+    }
     String endDate = end.toIso8601String();
     String startDate = start.toIso8601String();
     return FirestoreListView(
