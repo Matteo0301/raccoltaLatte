@@ -21,10 +21,21 @@ const String collectionsTable = 'collections';
 
 Future<List<Origin>> getOrigins() async {
   try {
-    final list = (await db.collection(originsTable).get())
-        .docs
-        .map((e) => Origin.fromJson(e.data(), e.id))
-        .toList();
+    final list;
+    if (useCache) {
+      list = (await db
+              .collection(originsTable)
+              .get(const GetOptions(source: Source.cache)))
+          .docs
+          .map((e) => Origin.fromJson(e.data(), e.id))
+          .toList();
+    } else {
+      list = (await db.collection(originsTable).get())
+          .docs
+          .map((e) => Origin.fromJson(e.data(), e.id))
+          .toList();
+    }
+
     return list;
   } catch (e) {
     return Future.error('Impossibile effettuare l\'operazione');

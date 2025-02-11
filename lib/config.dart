@@ -17,3 +17,6 @@ const limitUsersKey = 'limit_users';
 
 bool askEmployee = false;
 const askEmployeeKey = 'ask_employee';
+
+bool useCache = true;
+const useCacheKey = 'use_cache';
