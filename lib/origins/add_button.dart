@@ -11,6 +11,7 @@ class AddButton extends StatelessWidget {
   static Future<void> inputPopup(BuildContext context, Origin? initial) async {
     String? s = await showDialog(
         context: context,
+        barrierDismissible: false,
         builder: (_) => OriginForm(
               initial: initial,
             ));

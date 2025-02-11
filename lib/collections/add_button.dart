@@ -82,6 +82,7 @@ class AddButtonState extends State<AddButton> {
     if (context.mounted) {
       s = await showDialog(
           context: context,
+          barrierDismissible: false,
           builder: (_) {
             var quantityController = TextEditingController(text: recognized);
             var quantity2Controller = TextEditingController(text: '0');

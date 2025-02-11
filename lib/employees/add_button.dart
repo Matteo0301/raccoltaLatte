@@ -11,6 +11,7 @@ class AddButton extends StatelessWidget {
       BuildContext context, Employee? initial) async {
     String? s = await showDialog(
         context: context,
+        barrierDismissible: false,
         builder: (_) => EmployeeForm(
               initial: initial,
             ));
