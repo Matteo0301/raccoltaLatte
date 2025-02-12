@@ -17,6 +17,10 @@ class CollectionsList extends StatelessWidget {
   final DateTime date;
   final String employee;
 
+  String getEmployeeFromMap(doc) {
+    return doc.containsKey("employee") ? doc['employee'] : '';
+  }
+
   @override
   Widget build(BuildContext context) {
     final DateTime end;
@@ -32,7 +36,8 @@ class CollectionsList extends StatelessWidget {
     String startDate = start.toIso8601String();
     return FirestoreListView(
       query: getCollectionsQuery(username, admin, startDate, endDate),
-      itemBuilder: (context, doc) {
+      itemBuilder: (context, docOrig) {
+        var doc = Map<String, dynamic>.from(docOrig.data() as Map);
         final DateTime date = DateTime.parse(doc['date']);
         return ListTile(
           visualDensity: const VisualDensity(vertical: 4),
@@ -43,7 +48,7 @@ class CollectionsList extends StatelessWidget {
               'Quantità: ${doc['quantity']}, Seconda: ${doc['quantity2']}'),
           trailing: Column(mainAxisSize: MainAxisSize.min, children: [
             Text(
-                '${doc['user']}\n(${date.day.toString().padLeft(2, '0')}/${date.month.toString().padLeft(2, '0')}/${date.year} ${date.hour}:${date.minute.toString().padLeft(2, '0')})'),
+                '${doc['user']}:${getEmployeeFromMap(doc)}\n(${date.day.toString().padLeft(2, '0')}/${date.month.toString().padLeft(2, '0')}/${date.year} ${date.hour}:${date.minute.toString().padLeft(2, '0')})'),
             (admin || !limitUsers)
                 ? (Row(mainAxisSize: MainAxisSize.min, children: [
                     IconButton(
