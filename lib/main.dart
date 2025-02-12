@@ -50,9 +50,7 @@ Future<void> main() async {
       uploadOnWifi = remoteConfig.getBool(uploadOnWifiKey);
       limitUsers = remoteConfig.getBool(limitUsersKey);
       askEmployee = remoteConfig.getBool(askEmployeeKey);
-      if (!kIsWeb) {
-        useCache = remoteConfig.getBool(useCacheKey);
-      }
+      useCache = remoteConfig.getBool(useCacheKey);
     });
 
     // Pass all uncaught "fatal" errors from the framework to Crashlytics
@@ -65,6 +63,8 @@ Future<void> main() async {
       FirebaseCrashlytics.instance.recordError(error, stack, fatal: true);
       return true;
     };
+  } else {
+    useCache = false;
   }
 
   if (!kIsWeb) {
