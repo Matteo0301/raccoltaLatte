@@ -47,8 +47,8 @@ class HomePageState extends State<HomePage> {
   void initState() {
     super.initState();
     date = DateTime.now();
-    final next = date.copyWith(day: date.day + 1);
-    if (next.day == 1 && date.hour >= 12) {
+    final next = date.copyWith(hour: date.hour + 12);
+    if (date.hour >= 12) {
       date = next;
     }
   }
@@ -123,9 +123,6 @@ class HomePageState extends State<HomePage> {
                   onPressed: () {
                     setState(() {
                       date = date.copyWith(day: date.day + 1, hour: 12);
-                      if (date.isAfter(DateTime.now())) {
-                        date = DateTime.now();
-                      }
                     });
                   },
                   icon: const Icon(Icons.arrow_back_ios)),

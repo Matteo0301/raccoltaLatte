@@ -3,7 +3,9 @@ import 'dart:convert';
 import 'dart:io';
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_storage/firebase_storage.dart';
+import 'package:flutter/foundation.dart';
 import 'package:raccoltalatte/collections/collection.dart';
+import 'package:raccoltalatte/config.dart';
 import 'package:raccoltalatte/employees/employee.dart';
 import 'package:raccoltalatte/origins/origin.dart';
 import 'package:raccoltalatte/secrets.dart';
@@ -21,7 +23,7 @@ const String collectionsTable = 'collections';
 
 Future<List<Origin>> getOrigins() async {
   try {
-    final list;
+    final List<Origin> list;
     if (useCache) {
       list = (await db
               .collection(originsTable)
@@ -123,7 +125,7 @@ Future<void> addCollection(Collection collection) async {
 }
 
 Future<void> uploadFile(File file, String remoteName) async {
-  print(remoteName);
+  debugPrint(remoteName);
   await storage.ref(remoteName).putFile(file);
 }
 
@@ -137,7 +139,7 @@ String remoteName(DateTime date) {
 }
 
 Future<String?> getImageURL(DateTime date) async {
-  print(imagePrefix + date.toIso8601String());
+  debugPrint(imagePrefix + date.toIso8601String());
   try {
     return (await storage
         .ref(storagePath)
