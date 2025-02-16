@@ -43,14 +43,12 @@ Future<void> main() async {
       useCacheKey: true,
     });
 
+    await remoteConfig.fetchAndActivate();
+    fetchConfig();
+
     remoteConfig.onConfigUpdated.listen((event) async {
       await remoteConfig.activate();
-
-      saveFile = remoteConfig.getBool(saveFileKey);
-      uploadOnWifi = remoteConfig.getBool(uploadOnWifiKey);
-      limitUsers = remoteConfig.getBool(limitUsersKey);
-      askEmployee = remoteConfig.getBool(askEmployeeKey);
-      useCache = remoteConfig.getBool(useCacheKey);
+      fetchConfig();
     });
 
     // Pass all uncaught "fatal" errors from the framework to Crashlytics

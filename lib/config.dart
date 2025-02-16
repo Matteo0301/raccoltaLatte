@@ -20,3 +20,11 @@ const askEmployeeKey = 'ask_employee';
 
 bool useCache = true;
 const useCacheKey = 'use_cache';
+
+void fetchConfig() {
+  saveFile = remoteConfig.getBool(saveFileKey);
+  uploadOnWifi = remoteConfig.getBool(uploadOnWifiKey);
+  limitUsers = remoteConfig.getBool(limitUsersKey);
+  askEmployee = remoteConfig.getBool(askEmployeeKey);
+  useCache = remoteConfig.getBool(useCacheKey);
+}
