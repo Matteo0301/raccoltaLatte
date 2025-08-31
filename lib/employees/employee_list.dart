@@ -4,6 +4,7 @@ import 'package:raccoltalatte/employees/add_button.dart';
 import 'package:raccoltalatte/employees/employee.dart';
 import 'package:raccoltalatte/requests.dart';
 import 'package:flutter/material.dart';
+import 'package:raccoltalatte/utils.dart';
 
 class EmployeeList extends StatelessWidget {
   const EmployeeList({super.key, required this.admin, required this.username});
@@ -20,11 +21,21 @@ class EmployeeList extends StatelessWidget {
             style: const TextStyle(fontSize: 20), 'Conferente: ${doc['name']}'),
         trailing: Row(mainAxisSize: MainAxisSize.min, children: [
           IconButton(
-              onPressed: () => removeEmployee(doc['name']).catchError((error) {
-                    snackbarKey.currentState?.showSnackBar(
-                      SnackBar(content: Text(error.toString())),
-                    );
-                  }),
+              onPressed: () async {
+                bool? confirm = await showDialog(
+                    context: context,
+                    builder: (_) {
+                      return ConfirmDialog(context: context);
+                    });
+                if (confirm == null || !confirm) {
+                  return;
+                }
+                removeEmployee(doc['name']).catchError((error) {
+                  snackbarKey.currentState?.showSnackBar(
+                    SnackBar(content: Text(error.toString())),
+                  );
+                });
+              },
               icon: const Icon(Icons.delete)),
           IconButton(
               onPressed: () async {

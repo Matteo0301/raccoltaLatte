@@ -161,6 +161,8 @@ class HomePageState extends State<HomePage> {
           username: widget.username,
           admin: widget.admin,
           employee: employee,
+          floating: true,
+          initial: null,
         ),
         drawer: drawer);
   }

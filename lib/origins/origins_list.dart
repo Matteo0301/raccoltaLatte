@@ -6,6 +6,7 @@ import 'package:raccoltalatte/origins/origin.dart';
 import 'package:raccoltalatte/requests.dart';
 import 'package:flutter/material.dart';
 import 'package:raccoltalatte/origins/add_button.dart';
+import 'package:raccoltalatte/utils.dart';
 
 class OriginsList extends StatelessWidget {
   OriginsList({super.key, required this.admin, required this.username});
@@ -40,12 +41,21 @@ class OriginsList extends StatelessWidget {
                     ['sera', 'mattina']),
               ),
               IconButton(
-                  onPressed: () =>
-                      removeOrigin(doc['name']).catchError((error) {
-                        snackbarKey.currentState?.showSnackBar(
-                          SnackBar(content: Text(error.toString())),
-                        );
-                      }),
+                  onPressed: () async {
+                    bool? confirm = await showDialog(
+                        context: context,
+                        builder: (_) {
+                          return ConfirmDialog(context: context);
+                        });
+                    if (confirm == null || !confirm) {
+                      return;
+                    }
+                    removeOrigin(doc['name']).catchError((error) {
+                      snackbarKey.currentState?.showSnackBar(
+                        SnackBar(content: Text(error.toString())),
+                      );
+                    });
+                  },
                   icon: const Icon(Icons.delete)),
               IconButton(
                   onPressed: () async {

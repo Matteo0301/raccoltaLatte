@@ -65,12 +65,34 @@ class CollectionsList extends StatelessWidget {
                         }
                       },
                     ),
-                    AddButton(username: username, admin: admin, employee: employee, floating: false, initial: Collection('${doc['user']}', '${doc['origin']}', int.parse('${doc['quantity']}'), int.parse('${doc['quantity2']}'), date, employee, ""),),
+                    AddButton(
+                      username: username,
+                      admin: admin,
+                      employee: employee,
+                      floating: false,
+                      initial: Collection(
+                          '${doc['user']}',
+                          '${doc['origin']}',
+                          int.parse('${doc['quantity']}'),
+                          int.parse('${doc['quantity2']}'),
+                          date,
+                          employee,
+                          ""),
+                    ),
                     IconButton(
-                        onPressed: () =>
-                            removeCollection(doc['date']).catchError((error) {
-                              logAndShow(error.toString());
-                            }),
+                        onPressed: () async {
+                          bool? confirm = await showDialog(
+                              context: context,
+                              builder: (_) {
+                                return ConfirmDialog(context: context);
+                              });
+                          if (confirm == null || !confirm) {
+                            return;
+                          }
+                          removeCollection(doc['date']).catchError((error) {
+                            logAndShow(error.toString());
+                          });
+                        },
                         icon: const Icon(Icons.delete))
                   ]))
                 : const SizedBox()
