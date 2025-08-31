@@ -12,7 +12,12 @@
           "package_name": "com.example.raccoltalatte"
         }
       },
-      "oauth_client": [],
+      "oauth_client": [
+        {
+          "client_id": "950079165919-87ti4dfou8u14lm61cf480qe59mv175v.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
       "api_key": [
         {
           "current_key": "AIzaSyBaKYkxPg0jWdu5DsoMHiG-Htx4Uh6SHgw"
@@ -20,7 +25,19 @@
       ],
       "services": {
         "appinvite_service": {
-          "other_platform_oauth_client": []
+          "other_platform_oauth_client": [
+            {
+              "client_id": "950079165919-705k1l33v4ctm0m42ivfdggr4a52gva7.apps.googleusercontent.com",
+              "client_type": 3
+            },
+            {
+              "client_id": "950079165919-tjb4j8jeh7obm1mjfekrnqen1n6ctp51.apps.googleusercontent.com",
+              "client_type": 2,
+              "ios_info": {
+                "bundle_id": "com.example.raccoltalatte"
+              }
+            }
+          ]
         }
       }
     }

@@ -5,6 +5,7 @@ import 'package:raccoltalatte/auth.dart';
 import 'package:raccoltalatte/collections/home.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
+import 'package:raccoltalatte/secrets.dart';
 import 'package:raccoltalatte/utils.dart';
 
 class Login extends StatefulWidget {
@@ -20,35 +21,21 @@ class LoginState extends State<Login> {
   TextEditingController userController = TextEditingController();
   TextEditingController passwordController = TextEditingController();
 
-  Future<UserCredential> signInWithGoogle() async {
-    if (kIsWeb) {
-      // Create a new provider
-      GoogleAuthProvider googleProvider = GoogleAuthProvider();
+ /*  Future<UserCredential> signInWithGoogle() async {
+    final GoogleSignIn googleSignIn = GoogleSignIn.instance;
+    await googleSignIn.initialize(serverClientId: serverClientId);
+    // Trigger the authentication flow
+    final GoogleSignInAccount googleUser = await GoogleSignIn.instance.authenticate();
 
-      googleProvider
-          .addScope('https://www.googleapis.com/auth/contacts.readonly');
-      googleProvider.setCustomParameters({'login_hint': 'user@example.com'});
+    // Obtain the auth details from the request
+    final GoogleSignInAuthentication googleAuth = googleUser.authentication;
 
-      // Once signed in, return the UserCredential
-      return await FirebaseAuth.instance.signInWithPopup(googleProvider);
-    } else {
-      // Trigger the authentication flow
-      final GoogleSignInAccount? googleUser = await GoogleSignIn().signIn();
+    // Create a new credential
+    final credential = GoogleAuthProvider.credential(idToken: googleAuth.idToken);
 
-      // Obtain the auth details from the request
-      final GoogleSignInAuthentication? googleAuth =
-          await googleUser?.authentication;
-
-      // Create a new credential
-      final credential = GoogleAuthProvider.credential(
-        accessToken: googleAuth?.accessToken,
-        idToken: googleAuth?.idToken,
-      );
-
-      // Once signed in, return the UserCredential
-      return await FirebaseAuth.instance.signInWithCredential(credential);
-    }
-  }
+    // Once signed in, return the UserCredential
+    return await FirebaseAuth.instance.signInWithCredential(credential);
+  } */
 
   @override
   Widget build(BuildContext context) {
@@ -144,7 +131,7 @@ class LoginState extends State<Login> {
                           child: Text('Login', style: TextStyle(fontSize: 20)),
                         ),
                       ),
-                      ElevatedButton(
+                      /* Padding(padding: EdgeInsets.all(10.0),child: ElevatedButton(
                         onPressed: () async {
                           try {
                             await signInWithGoogle();
@@ -194,7 +181,7 @@ class LoginState extends State<Login> {
                           child: Text('Login with Google',
                               style: TextStyle(fontSize: 20)),
                         ),
-                      ),
+                      )) */
                     ]),
                   ),
                 ),

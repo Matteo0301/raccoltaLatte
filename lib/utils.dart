@@ -185,12 +185,12 @@ class FileList {
 }
 
 void logAndShow(String s) async {
-  await FirebaseAnalytics.instance.logEvent(
+  /* await FirebaseAnalytics.instance.logEvent(
     name: "error",
     parameters: {
       "content": s,
     },
-  );
+  ); */
   snackbarKey.currentState?.showSnackBar(
     SnackBar(content: Text(s)),
   );
