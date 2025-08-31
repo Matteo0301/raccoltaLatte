@@ -6,10 +6,10 @@ class DateTimePicker extends StatefulWidget {
       {super.key,
       required this.date,
       required this.onChanged,
-      required this.admin});
+      required this.immutable});
   final DateTime date;
   final ValueSetter<DateTime> onChanged;
-  final bool admin;
+  final bool immutable;
 
   @override
   // ignore: no_logic_in_create_state
@@ -51,7 +51,7 @@ class DateTimePickerState extends State<DateTimePicker> {
 
   @override
   Widget build(BuildContext context) {
-    if (widget.admin) {
+    if (widget.immutable) {
       return Column(
         children: [
           Row(

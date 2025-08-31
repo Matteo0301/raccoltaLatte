@@ -1,4 +1,6 @@
 import 'package:firebase_ui_firestore/firebase_ui_firestore.dart';
+import 'package:raccoltalatte/collections/add_button.dart';
+import 'package:raccoltalatte/collections/collection.dart';
 import 'package:raccoltalatte/config.dart';
 import 'package:raccoltalatte/requests.dart';
 import 'package:raccoltalatte/utils.dart';
@@ -63,6 +65,7 @@ class CollectionsList extends StatelessWidget {
                         }
                       },
                     ),
+                    AddButton(username: username, admin: admin, employee: employee, floating: false, initial: Collection('${doc['user']}', '${doc['origin']}', int.parse('${doc['quantity']}'), int.parse('${doc['quantity2']}'), date, employee, ""),),
                     IconButton(
                         onPressed: () =>
                             removeCollection(doc['date']).catchError((error) {

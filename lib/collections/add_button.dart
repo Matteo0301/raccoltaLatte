@@ -20,10 +20,14 @@ class AddButton extends StatefulWidget {
       {super.key,
       required this.username,
       required this.admin,
-      required this.employee});
+      required this.employee,
+      required this.floating,
+      this.initial});
   final String username;
   final bool admin;
   final String employee;
+  final bool floating;
+  final Collection? initial;
 
   @override
   State<StatefulWidget> createState() => AddButtonState();
@@ -68,14 +72,18 @@ class AddButtonState extends State<AddButton> {
     return null;
   }
 
-  Future<void> inputPopup(BuildContext context, Collection? _) async {
+  Future<void> inputPopup(BuildContext context, Collection? initial) async {
     date = DateTime.now();
-    String? filePath = await obtainImage();
     final String recognized;
+    String? filePath;
+    if(initial==null)
+    { filePath = await obtainImage();
     if (filePath != null) {
       recognized = await recognizer.processImage(filePath);
     } else {
       recognized = '';
+    }}else{
+      recognized = initial.quantity.toString();
     }
 
     String? s;
@@ -112,7 +120,7 @@ class AddButtonState extends State<AddButton> {
                     onChanged: (value) {
                       date = value;
                     },
-                    admin: widget.admin,
+                    immutable: widget.admin || initial != null,
                   ),
                 ]);
           });
@@ -149,13 +157,28 @@ class AddButtonState extends State<AddButton> {
 
     final Collection c = Collection(widget.username, origin, quantity,
         quantity2, date, widget.employee, '');
-    await addCollection(c).catchError((error) {
+    if(initial == null) {
+      await addCollection(c).catchError((error) {
       logAndShow(error);
     });
+    }else{
+      await updateCollection(c.date.toIso8601String(),c).catchError((error) {
+      logAndShow(error);
+    });
+    }
   }
 
   @override
   Widget build(BuildContext context) {
-    return Button<Collection>(inputPopup: inputPopup);
+    if(widget.floating) {
+      return Button<Collection>(inputPopup: inputPopup);
+    }else{
+      return IconButton(
+                  onPressed: () async {
+                    await inputPopup(
+                        context, widget.initial);
+                  },
+                  icon: const Icon(Icons.create));
+    }
   }
 }

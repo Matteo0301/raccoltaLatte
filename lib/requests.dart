@@ -124,6 +124,15 @@ Future<void> addCollection(Collection collection) async {
   await db.collection(collectionsTable).add(collection.toJson());
 }
 
+Future<void> updateCollection(String date, Collection collection) async {
+  String id =
+      (await db.collection(collectionsTable).where('date', isEqualTo: date).get())
+          .docs
+          .first
+          .id;
+  db.collection(collectionsTable).doc(id).set(collection.toJson());
+}
+
 Future<void> uploadFile(File file, String remoteName) async {
   debugPrint(remoteName);
   await storage.ref(remoteName).putFile(file);

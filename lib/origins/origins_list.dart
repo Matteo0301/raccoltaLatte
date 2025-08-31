@@ -23,7 +23,7 @@ class OriginsList extends StatelessWidget {
             onChanged: (value) {
               date = value;
             },
-            admin: admin),
+            immutable: admin),
         Expanded(
             child: FirestoreListView(
           query: query,
