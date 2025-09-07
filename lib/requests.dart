@@ -125,11 +125,11 @@ Future<void> addCollection(Collection collection) async {
 }
 
 Future<void> updateCollection(String date, Collection collection) async {
-  String id =
-      (await db.collection(collectionsTable).where('date', isEqualTo: date).get())
-          .docs
-          .first
-          .id;
+  var tmp = await db
+      .collection(collectionsTable)
+      .where('date', isEqualTo: date)
+      .get();
+  String id = (tmp).docs.first.id;
   db.collection(collectionsTable).doc(id).set(collection.toJson());
 }
 

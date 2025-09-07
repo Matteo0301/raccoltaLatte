@@ -73,17 +73,19 @@ class AddButtonState extends State<AddButton> {
   }
 
   Future<void> inputPopup(BuildContext context, Collection? initial) async {
-    date = DateTime.now();
     final String recognized;
     String? filePath;
-    if(initial==null)
-    { filePath = await obtainImage();
-    if (filePath != null) {
-      recognized = await recognizer.processImage(filePath);
+    if (initial == null) {
+      date = DateTime.now();
+      filePath = await obtainImage();
+      if (filePath != null) {
+        recognized = await recognizer.processImage(filePath);
+      } else {
+        recognized = '';
+      }
     } else {
-      recognized = '';
-    }}else{
       recognized = initial.quantity.toString();
+      date = initial.date;
     }
 
     String? s;
@@ -135,14 +137,6 @@ class AddButtonState extends State<AddButton> {
     final quantity2 = int.parse(
         tmp[1].substring((tmp[1].length - 5 >= 0) ? tmp[1].length - 5 : 0));
 
-    if (recognized != '' && recognized != quantity.toString()) {
-      FirebaseAnalytics.instance.logEvent(name: 'ocr', parameters: {
-        'equals': (recognized == quantity.toString()),
-        'recognized': recognized,
-        'real': quantity
-      });
-    }
-
     // save file
     if (!kIsWeb && filePath != null) {
       Gal.putImage(filePath);
@@ -157,28 +151,27 @@ class AddButtonState extends State<AddButton> {
 
     final Collection c = Collection(widget.username, origin, quantity,
         quantity2, date, widget.employee, '');
-    if(initial == null) {
+    if (initial == null) {
       await addCollection(c).catchError((error) {
-      logAndShow(error);
-    });
-    }else{
-      await updateCollection(c.date.toIso8601String(),c).catchError((error) {
-      logAndShow(error);
-    });
+        logAndShow("Impossibile aggiungere la raccolta");
+      });
+    } else {
+      await updateCollection(c.date.toIso8601String(), c).catchError((error) {
+        logAndShow("Impossibile modificare la raccolta");
+      });
     }
   }
 
   @override
   Widget build(BuildContext context) {
-    if(widget.floating) {
+    if (widget.floating) {
       return Button<Collection>(inputPopup: inputPopup);
-    }else{
+    } else {
       return IconButton(
-                  onPressed: () async {
-                    await inputPopup(
-                        context, widget.initial);
-                  },
-                  icon: const Icon(Icons.create));
+          onPressed: () async {
+            await inputPopup(context, widget.initial);
+          },
+          icon: const Icon(Icons.create));
     }
   }
 }
